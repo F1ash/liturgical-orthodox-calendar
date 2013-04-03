@@ -7,8 +7,9 @@ QString SCRIPT2 = QString::fromUtf8("\"><\\/script>');</script></br>");
 QString SCRIPT3 = QString::fromUtf8("</div></body></html>");
 
 QString LITURGY = QString::fromUtf8("<div class=\"sluzh\"><a href=\"http://www.patriarchia.ru/bu/%1/print.html\">Богослужебные указания</a>");
+QString FULLDAY = QString::fromUtf8("<br><a href=\"http://days.pravoslavie.ru/Days/%1.htm\">Календарь на \"Православие.ру\"</a>");
 
-//QString ICON_SCRIPT = QString::fromUtf8("<script language=\"Javascript\" src=\"http://script.pravoslavie.ru/icon.php\"></script>");
+QString ICON_SCRIPT = QString::fromUtf8("<script language=\"Javascript\" src=\"http://script.pravoslavie.ru/icon.php\"></script>");
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -42,14 +43,14 @@ MainWindow::MainWindow(QWidget *parent)
     diskCache->setCacheDirectory(cacheDir);
     manager->setCache(diskCache);
     connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
-    connect(this, SIGNAL(cacheChecked()), this, SLOT(trayIconInitiate()));
+    connect(this, SIGNAL(cacheChecked()), this, SLOT(initTrayIcon()));
+    initActions();
+    initToolBar();
     checkCache();
 }
 
 MainWindow::~MainWindow()
 {
-    delete calendarView;
-    calendarView = 0;
     delete trayIconMenu;
     trayIconMenu = 0;
     delete trayIcon;
@@ -76,19 +77,52 @@ MainWindow::~MainWindow()
     _backwardAction = 0;
     delete _settingsAction;
     _settingsAction = 0;
+    delete toolBar;
+    toolBar = 0;
+    delete calendarView;
+    calendarView = 0;
 }
-void MainWindow::trayIconInitiate()
+void MainWindow::initActions()
+{
+  _reloadAction = new QAction(QString().fromUtf8("Обновить"), this);
+  _reloadAction->setIcon ( QIcon().fromTheme("view-refresh") );
+  _forwardAction = new QAction(QString().fromUtf8("Вперёд"), this);
+  _forwardAction->setIcon ( QIcon().fromTheme("go-next") );
+  _backwardAction = new QAction(QString().fromUtf8("Назад"), this);
+  _backwardAction->setIcon ( QIcon().fromTheme("go-previous") );
+  _settingsAction = new QAction(QString().fromUtf8("Настройки"), this);
+  _settingsAction->setIcon ( QIcon().fromTheme("settings") );
+  hideAction = new QAction(QString().fromUtf8(""), this);
+  closeAction = new QAction(QString().fromUtf8("Закрыть"), this);
+  closeAction->setIcon ( QIcon().fromTheme("shutdown") );
+
+  connect(_reloadAction, SIGNAL(triggered()), this, SLOT(reloadAction()));
+  connect(_forwardAction, SIGNAL(triggered()), this, SLOT(forwardAction()));
+  connect(_backwardAction, SIGNAL(triggered()), this, SLOT(backwardAction()));
+  connect(_settingsAction, SIGNAL(triggered()), this, SLOT(settingsAction()));
+  connect(hideAction, SIGNAL(triggered()), this, SLOT(changeCalendarVisibility()));
+  connect(closeAction, SIGNAL(triggered()), this, SLOT(closeCalendar()));
+}
+void MainWindow::initToolBar()
+{
+  toolBar = new QToolBar(this);
+  toolBar->addAction(_reloadAction);
+  toolBar->addAction(_backwardAction);
+  toolBar->addAction(_forwardAction);
+  toolBar->addSeparator();
+  toolBar->addAction(_settingsAction);
+  toolBar->addSeparator();
+  toolBar->setAllowedAreas(Qt::AllToolBarAreas);
+  toolBar->setMovable(true);
+  toolBar->setFloatable(true);
+  this->addToolBar(toolBar);
+}
+void MainWindow::initTrayIcon()
 {
     trayIconMenu = new QMenu(this);
-    hideAction = trayIconMenu->addAction(QString(" "));
+    trayIconMenu->addAction(hideAction);
     trayIconMenu->addSeparator();
-    showSettings = trayIconMenu->addAction(QString().fromUtf8("Настройки"));
-    showSettings->setIcon ( QIcon().fromTheme("settings") );
-    closeAction = trayIconMenu->addAction(QString().fromUtf8("Закрыть"));
-    closeAction->setIcon ( QIcon().fromTheme("shutdown") );
-    connect(hideAction, SIGNAL(triggered()), this, SLOT(changeCalendarVisibility()));
-    connect(showSettings, SIGNAL(triggered()), this, SLOT(settingsAction()));
-    connect(closeAction, SIGNAL(triggered()), this, SLOT(closeCalendar()));
+    trayIconMenu->addAction(closeAction);
 
     trayIcon = new QSystemTrayIcon(this);
     trayIcon->setToolTip(QString().fromLocal8Bit("Православный Календарь"));
@@ -97,9 +131,9 @@ void MainWindow::trayIconInitiate()
     trayIcon->show();
     connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, \
     SLOT(trayIconActivated(QSystemTrayIcon::ActivationReason)));
-    showCalendar();
+    initCalendar();
 }
-void MainWindow::showCalendar()
+void MainWindow::initCalendar()
 {
     calendarView = new QWebView(this);
     calendarView->settings()->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, true);
@@ -109,24 +143,12 @@ void MainWindow::showCalendar()
     calendarView->settings()->setOfflineStoragePath(cacheDir);
     calendarView->settings()->setOfflineWebApplicationCachePath(cacheDir);
     calendarView->settings()->setIconDatabasePath(cacheDir);
-
     calendarView->setContextMenuPolicy(Qt::ActionsContextMenu);
-    _reloadAction = new QAction(QString().fromUtf8("Обновить"), calendarView);
-    _reloadAction->setIcon ( QIcon().fromTheme("view-refresh") );
+
     calendarView->addAction(_reloadAction);
-    connect(_reloadAction, SIGNAL(triggered()), this, SLOT(reloadAction()));
-    _forwardAction = new QAction(QString().fromUtf8("Вперёд"), calendarView);
-    _forwardAction->setIcon ( QIcon().fromTheme("go-next") );
     calendarView->addAction(_forwardAction);
-    connect(_forwardAction, SIGNAL(triggered()), this, SLOT(forwardAction()));
-    _backwardAction = new QAction(QString().fromUtf8("Назад"), calendarView);
-    _backwardAction->setIcon ( QIcon().fromTheme("go-previous") );
     calendarView->addAction(_backwardAction);
-    connect(_backwardAction, SIGNAL(triggered()), this, SLOT(backwardAction()));
-    _settingsAction = new QAction(QString().fromUtf8("Настройки"), calendarView);
-    _settingsAction->setIcon ( QIcon().fromTheme("settings") );
     calendarView->addAction(_settingsAction);
-    connect(_settingsAction, SIGNAL(triggered()), this, SLOT(settingsAction()));
 
     reloadCalendar();
     calendarView->show();
@@ -141,9 +163,11 @@ QByteArray MainWindow::buildScript()
   QString param2 = "";
   QString param3 = "";
 
-  //if (settingsWidget->showDayIcon()) param1 = ICON_SCRIPT;
+  if (settingsWidget->showDayIcon()) param1 = ICON_SCRIPT;
 
-  param2.append( QString("&dayicon=%1").arg(settingsWidget->showDayIcon()) );
+  //param2.append( QString("&dayicon=%1").arg(settingsWidget->showDayIcon()) );
+  param2.append( QString("&target=0") ); // open links in old (current) window
+  param2.append( QString("&name=0&life=1") );
   param2.append( QString("&images=%1").arg(settingsWidget->showImages()) );
   param2.append( QString("&vek=%1").arg(settingsWidget->showVek()) );
   param2.append( QString("&bold=%1").arg(settingsWidget->showBold()) );
@@ -158,7 +182,7 @@ QByteArray MainWindow::buildScript()
   param2.append( QString("&chten=%1").arg(settingsWidget->showChten()) );
   param2.append( QString("&hrams=0&hram=0") );
   QDate date = settingsWidget->selectedDate();
-  //qDebug()<<date.toString(Qt::ISODate);
+  //qDebug()<<date.toString(Qt::ISODate)<<" "<<QDate::fromJulianDay(date.toJulianDay()-13);
   if (settingsWidget->showLiturgy())
     {
       QString _date = date.toString(Qt::ISODate);
@@ -167,6 +191,9 @@ QByteArray MainWindow::buildScript()
       param2.append(QString("&date=%1").arg(_d.join("")));
       param3 = LITURGY.arg(_date);
     };
+  QString _date = QDate::fromJulianDay(date.toJulianDay()-13).toString(Qt::ISODate);
+  QStringList _d = _date.split("-");
+  param3.append(FULLDAY.arg(_d.join("")));
 
   QString data = SCRIPT.arg(fonFile->fileName());
   data.append(param1);
@@ -221,9 +248,13 @@ void MainWindow::changeCalendarVisibility()
 }
 void MainWindow::settingsAction ()
 {
-  settingsDock->show();
-  settingsWidget->setFocusToSettings();
-  if (!this->isVisible()) changeCalendarVisibility();
+  if (!settingsDock->isVisible())
+    {
+      settingsDock->show();
+      settingsWidget->setFocusToSettings();
+      if (!this->isVisible()) changeCalendarVisibility();
+    }
+  else settingsDock->hide();
 }
 void MainWindow::reloadAction()
 {
@@ -236,15 +267,6 @@ void MainWindow::forwardAction()
 void MainWindow::backwardAction()
 {
   calendarView->back();
-}
-void MainWindow::leaveEvent(QEvent *ev)
-{
-  qDebug("jkljljllj");  //Qt::ActiveWindowFocusReason
-  if (ev->type()==QEvent::FocusOut or ev->type()==QEvent::GraphicsSceneHoverLeave)
-    {
-      ev->ignore();
-      this->changeCalendarVisibility();
-    };
 }
 void MainWindow::closeEvent(QCloseEvent *ev)
 {

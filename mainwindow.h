@@ -8,19 +8,20 @@
 #include <QIcon>
 #include <QtWebKit/QWebView>
 #include <QDockWidget>
-#include <QFocusEvent>
+#include <QCloseEvent>
 #include <QSettings>
 #include <QTemporaryFile>
 #include <QByteArray>
 #include <QDate>
 #include <QDir>
 #include <QScrollArea>
-#include "settingswidget.h"
+#include <QToolBar>
 #include <QDesktopServices>
 #include <QNetworkDiskCache>
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
+#include "settingswidget.h"
 
 class MainWindow : public QMainWindow
 {
@@ -34,7 +35,6 @@ private:
     QSystemTrayIcon *trayIcon;
     QWebView *calendarView;
     QMenu *trayIconMenu;
-    QAction *showSettings;
     QAction *hideAction;
     QAction *closeAction;
     QAction *_reloadAction;
@@ -45,7 +45,6 @@ private:
     SettingsWidget *settingsWidget;
     QScrollArea *scroll;
     void initialSettingsDock();
-    void leaveEvent(QEvent *);
     void closeEvent(QCloseEvent *);
     bool closeFlag;
     QString fileTemplate;
@@ -55,13 +54,16 @@ private:
     QNetworkAccessManager *manager;
     QNetworkDiskCache *diskCache;
     QString cacheDir;
+    QToolBar *toolBar;
 
 signals:
     void cacheChecked();
 
 private slots:
-    void trayIconInitiate();
-    void showCalendar();
+    void initActions();
+    void initToolBar();
+    void initTrayIcon();
+    void initCalendar();
     QByteArray buildScript();
     bool readStartVisibility();
     void changeCalendarVisibility(const bool invert);
