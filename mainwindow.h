@@ -102,6 +102,7 @@ private slots:
     void addBookmarkAction();
     void initBookmarks();
     void loadBookmarkLink(QAction*);
+    void removeBookmark(QString);
 };
 
 #endif // MAINWINDOW_H

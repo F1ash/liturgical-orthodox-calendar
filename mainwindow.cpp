@@ -157,6 +157,7 @@ void MainWindow::initToolBar()
   this->initBookmarks();
   this->addToolBar(toolBar);
   connect(toolBar->bookmarkMenu, SIGNAL(triggered(QAction*)), this, SLOT(loadBookmarkLink(QAction*)));
+  connect(toolBar, SIGNAL(actionRemoved(QString)), this, SLOT(removeBookmark(QString)));
 }
 void MainWindow::initTrayIcon()
 {
@@ -427,8 +428,8 @@ void MainWindow::zoomOrigAction()
 void MainWindow::addBookmarkAction()
 {
   qDebug()<< "NAME <||>"<<calendarView->url();
-  /* url already exist in bookmarks
-   * set NAME of bookmark in Dialog
+  /* set NAME of bookmark in Dialog
+   * url already exist in bookmarks
    * save in bookmarkFile
    * reinit bookmarkMenu
    */
@@ -438,11 +439,23 @@ void MainWindow::initBookmarks()
 {
   QStringList bookmarks;
   bookmarks = settingsWidget->initBookmarks();
-  for (int i = 0; i < bookmarks.size(); ++i) toolBar->bookmarkMenu->addAction(bookmarks.at(i));
+  for (int i = 0; i < bookmarks.size(); ++i)
+    {
+      toolBar->bookmarkMenu->addAction(bookmarks.at(i));
+      if (i==2) toolBar->bookmarkMenu->addSeparator();
+    };
 }
 void MainWindow::loadBookmarkLink(QAction* act)
 {
   QString link;
   link = settingsWidget->readBookmarkLink(act->text());
   calendarView->load(QUrl::fromUserInput(link));
+}
+void MainWindow::removeBookmark(QString key)
+{
+  qDebug()<<key<<" removed";
+  settingsWidget->settings->beginGroup("bookmarks");
+  settingsWidget->settings->remove(key);
+  settingsWidget->settings->endGroup();
+  settingsWidget->settings->sync();
 }

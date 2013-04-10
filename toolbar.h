@@ -14,8 +14,17 @@ public:
   void addToolButton();
   void initBookmarks();
 
+signals:
+  void actionRemoved(QString);
+
 private:
   QToolButton *bookmarkButton;
   QAction *_bookmarkAction;
+  QMenu *clearMenu;
+  QAction *currentAction;
+
+private slots:
+  void showCustomMenu(QPoint);
+  void clearAction();
 };
 

@@ -158,6 +158,7 @@ QStringList SettingsWidget::initBookmarks() const
     {
       settings->setValue(QString::fromUtf8("Основы соц.концепции РПЦ"), QString::fromUtf8("http://www.patriarchia.ru/db/text/141422.html"));
       settings->setValue(QString::fromUtf8("Христианство.ру"), QString::fromUtf8("http://www.hristianstvo.ru/"));
+      settings->setValue(QString::fromUtf8("Православная Энциклопедия"), QString::fromUtf8("http://www.pravenc.ru/"));
       keys = settings->allKeys();
     };
   settings->endGroup();
