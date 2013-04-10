@@ -66,6 +66,9 @@ private:
   void initVariables();
   void readSettings();
 
+public slots:
+  QStringList initBookmarks() const;
+  QString readBookmarkLink(QString key) const;
 private slots:
   void apply_Settings();
 };

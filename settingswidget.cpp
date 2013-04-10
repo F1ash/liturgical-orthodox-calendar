@@ -1,4 +1,5 @@
 #include "settingswidget.h"
+#include <QDebug>
 
 SettingsWidget::SettingsWidget (QWidget *parent, Qt::WindowFlags f) :
   QWidget(parent, f)
@@ -149,6 +150,19 @@ void SettingsWidget::initVariables()
   _showLiturgy = settings->value("ShowLiturgy", 0).toInt() / 2;
   _geometry = settings->value("Geometry").toByteArray();
 }
+QStringList SettingsWidget::initBookmarks() const
+{
+  settings->beginGroup("bookmarks");
+  QStringList keys = settings->allKeys();
+  if (keys.isEmpty())
+    {
+      settings->setValue(QString::fromUtf8("Основы соц.концепции РПЦ"), QString::fromUtf8("http://www.patriarchia.ru/db/text/141422.html"));
+      settings->setValue(QString::fromUtf8("Христианство.ру"), QString::fromUtf8("http://www.hristianstvo.ru/"));
+      keys = settings->allKeys();
+    };
+  settings->endGroup();
+  return keys;
+}
 void SettingsWidget::readSettings()
 {
   initVariables();
@@ -230,4 +244,12 @@ QByteArray SettingsWidget::get_Geometry() const
 QDate SettingsWidget::selectedDate() const
 {
   return customDate->selectedDate();
+}
+QString SettingsWidget::readBookmarkLink(QString key) const
+{
+  QString link;
+  settings->beginGroup("bookmarks");
+  link = settings->value(key, QVariant("")).toString();
+  settings->endGroup();
+  return link;
 }

@@ -1,25 +1,20 @@
 #include "mainwindow.h"
 #include <QDebug>
 
-QString SCRIPT = QString::fromUtf8("<html><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /><body background=\"%1\" > <h1 align=\"center\"><font color=\"red\">ПРАВОСЛАВНЫЙ КАЛЕНДАРЬ</font></h1> <div align=\"center\">");
-QString SCRIPT1 = QString::fromUtf8("</div> <div><script language=\"Javascript\"> var d=new Date(); var to=-4-d.getTimezoneOffset()/60; document.write ( '<script language=\"Javascript\" src=\"http://script.days.ru/calendar.php?tmshift='+to +'");
+QString SCRIPT = QString::fromUtf8("<html><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /><style> form.fixed { position: fixed; background-color: rgba(255, 255, 255, 0.75); top: 0px; left: 5px; z-index: 999; } #top { position: relative; top: 45px; } </style><body background=\"%1\" >%2<h3 id =\"top\" align=\"center\"><font color=\"red\">ПРАВОСЛАВНЫЙ КАЛЕНДАРЬ</font></h3> <div id =\"top\" align=\"center\">");
+QString SCRIPT1 = QString::fromUtf8("</div> <div id =\"top\" ><script language=\"Javascript\"> var d=new Date(); var to=-4-d.getTimezoneOffset()/60; document.write ( '<script language=\"Javascript\" src=\"http://script.days.ru/calendar.php?tmshift='+to +'");
 QString SCRIPT2 = QString::fromUtf8("\"><\\/script>');</script></br>");
 QString SCRIPT3 = QString::fromUtf8("</div></body></html>");
 
 QString LITURGY = QString::fromUtf8("<div class=\"sluzh\"><a href=\"http://www.patriarchia.ru/bu/%1/print.html\">Богослужебные указания</a>");
-QString FULLDAY = QString::fromUtf8("<br><a href=\"http://days.pravoslavie.ru/Days/%1.htm\">Календарь на \"Православие.ру\"</a>");
 
-QString DOC1 = QString::fromUtf8("<br><a href=\"http://www.patriarchia.ru/db/text/141422.html\">Основы соц.концепции РПЦ</a>");
-
-QString SEARCH = QString::fromUtf8("<br><form action=\"http://www.hristianstvo.ru/search\" target=\"_self\" id=\"cse-search-box-iskomoe\"><div><span style=\"font-size:10pt\">Поиск в православном интернете:</span><br><input type=\"text\" name=\"q\" size=\"31\" /><input type=\"submit\" value=\"Поиск!\" /><input type=\"hidden\" name=\"firefox-a\" value=\"UTF-8\" /><input type=\"hidden\" name=\"cx\" value=\"006620037580445780645:e4joz-0lovc\" /><input type=\"hidden\" name=\"cof\" value=\"FORID:11\" /><input type=\"hidden\" name=\"newwindow\" value=\"1\" /><input type=\"hidden\" name=\"where\" value=\"2\" /><input type=\"hidden\" name=\"hl\" value=\"ru\" /><input type=\"hidden\" name=\"lr\" value=\"lang_ru\" /><input type=\"hidden\" name=\"source\" value=\"blog\" /></div></form><script type=\"text/javascript\" src=\"http://www.google.com/coop/cse/brand?form=cse-search-box-iskomoe&lang=ru\"></script>");
-
-QString ICON_SCRIPT = QString::fromUtf8("<script language=\"Javascript\" src=\"http://script.pravoslavie.ru/icon.php\"></script>");
+QString SEARCH = QString::fromUtf8("<form class=\"fixed\" action=\"http://www.hristianstvo.ru/search\" target=\"_self\" id=\"cse-search-box-iskomoe\"><div><span style=\"font-size:10pt\">Поиск в православном интернете:</span><br><input type=\"text\" name=\"q\" size=\"32\" /><input type=\"image\" name=\"i\" src=\"/usr/share/icons/oxygen/16x16/actions/zoom-next.png\" /><input type=\"hidden\" name=\"firefox-a\" value=\"UTF-8\" /><input type=\"hidden\" name=\"cx\" value=\"006620037580445780645:e4joz-0lovc\" /><input type=\"hidden\" name=\"cof\" value=\"FORID:11\" /><input type=\"hidden\" name=\"newwindow\" value=\"1\" /><input type=\"hidden\" name=\"where\" value=\"2\" /><input type=\"hidden\" name=\"hl\" value=\"ru\" /><input type=\"hidden\" name=\"lr\" value=\"lang_ru\" /><input type=\"hidden\" name=\"source\" value=\"blog\" /></div></form><script type=\"text/javascript\" src=\"http://www.google.com/coop/cse/brand?form=cse-search-box-iskomoe&lang=ru\"></script>");
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
     closeFlag = false;
-    this->initialSettingsDock();
+    initialSettingsDock();
     readStartVisibility();
     this->setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred));
     this->restoreGeometry(settingsWidget->get_Geometry());
@@ -51,9 +46,7 @@ MainWindow::MainWindow(QWidget *parent)
     diskCache->setCacheDirectory(cacheDir);
     manager->setCache(diskCache);
     connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
-    connect(this, SIGNAL(cacheChecked()), this, SLOT(initTrayIcon()));
-    initActions();
-    initToolBar();
+    connect(this, SIGNAL(cacheChecked()), this, SLOT(initAppWidgets()));
     checkCache();
 }
 
@@ -79,16 +72,33 @@ MainWindow::~MainWindow()
     diskCache = 0;
     delete _reloadAction;
     _reloadAction = 0;
+    delete _stopAction;
+    _stopAction = 0;
     delete _forwardAction;
     _forwardAction = 0;
     delete _backwardAction;
     _backwardAction = 0;
+    delete _zoomUpAction;
+    _zoomUpAction = 0;
+    delete _zoomOrigAction;
+    _zoomOrigAction = 0;
+    delete _zoomDownAction;
+    _zoomDownAction = 0;
     delete _settingsAction;
     _settingsAction = 0;
-    delete toolBar;
-    toolBar = 0;
     delete calendarView;
     calendarView = 0;
+    delete StatusBar;
+    StatusBar = 0;
+    delete toolBar;
+    toolBar = 0;
+}
+void MainWindow::initAppWidgets()
+{
+  initActions();
+  initTrayIcon();
+  initToolBar();
+  initCalendar();
 }
 void MainWindow::initActions()
 {
@@ -108,6 +118,10 @@ void MainWindow::initActions()
   _zoomDownAction->setIcon ( QIcon().fromTheme("zoom-out") );
   _settingsAction = new QAction(QString().fromUtf8("Настройки"), this);
   _settingsAction->setIcon ( QIcon().fromTheme("settings") );
+  _bookmarkAddAction = new QAction(QString().fromUtf8("Добавить в закладки"), this);
+  _bookmarkAddAction->setIcon ( QIcon().fromTheme("bookmark-new") );
+  _bookmarkDelAction = new QAction(QString().fromUtf8("Удалить закладку"), this);
+  _bookmarkDelAction->setIcon ( QIcon().fromTheme("edit-clear") );
   hideAction = new QAction(QString().fromUtf8(""), this);
   closeAction = new QAction(QString().fromUtf8("Закрыть"), this);
   closeAction->setIcon ( QIcon().fromTheme("shutdown") );
@@ -120,12 +134,13 @@ void MainWindow::initActions()
   connect(_zoomOrigAction, SIGNAL(triggered()), this, SLOT(zoomOrigAction()));
   connect(_zoomDownAction, SIGNAL(triggered()), this, SLOT(zoomDownAction()));
   connect(_settingsAction, SIGNAL(triggered()), this, SLOT(settingsAction()));
+  connect(_bookmarkAddAction, SIGNAL(triggered()), this, SLOT(addBookmarkAction()));
   connect(hideAction, SIGNAL(triggered()), this, SLOT(changeCalendarVisibility()));
   connect(closeAction, SIGNAL(triggered()), this, SLOT(closeCalendar()));
 }
 void MainWindow::initToolBar()
 {
-  toolBar = new QToolBar(this);
+  toolBar = new ToolBar(this);
   toolBar->addAction(_reloadAction);
   toolBar->addAction(_stopAction);
   toolBar->addAction(_backwardAction);
@@ -137,10 +152,11 @@ void MainWindow::initToolBar()
   toolBar->addSeparator();
   toolBar->addAction(_settingsAction);
   toolBar->addSeparator();
-  toolBar->setAllowedAreas(Qt::AllToolBarAreas);
-  toolBar->setMovable(true);
-  toolBar->setFloatable(true);
+  toolBar->addToolButton();
+  toolBar->addAction(_bookmarkAddAction);
+  this->initBookmarks();
   this->addToolBar(toolBar);
+  connect(toolBar->bookmarkMenu, SIGNAL(triggered(QAction*)), this, SLOT(loadBookmarkLink(QAction*)));
 }
 void MainWindow::initTrayIcon()
 {
@@ -156,18 +172,20 @@ void MainWindow::initTrayIcon()
     trayIcon->show();
     connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, \
     SLOT(trayIconActivated(QSystemTrayIcon::ActivationReason)));
-    initCalendar();
+    //initCalendar();
 }
 void MainWindow::initCalendar()
 {
     calendarView = new QWebView(this);
     calendarView->settings()->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, true);
     calendarView->settings()->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled, true);
+    calendarView->settings()->setAttribute(QWebSettings::LocalStorageEnabled, true);
     calendarView->settings()->setOfflineWebApplicationCacheQuota(50000000);
     calendarView->settings()->setOfflineStorageDefaultQuota(50000000);
     calendarView->settings()->setOfflineStoragePath(cacheDir);
     calendarView->settings()->setOfflineWebApplicationCachePath(cacheDir);
     calendarView->settings()->setIconDatabasePath(cacheDir);
+    calendarView->settings()->setLocalStoragePath(cacheDir);
     calendarView->setContextMenuPolicy(Qt::ActionsContextMenu);
     calendarView->page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
     firstZoom = calendarView->zoomFactor();
@@ -177,6 +195,7 @@ void MainWindow::initCalendar()
     calendarView->addAction(_forwardAction);
     calendarView->addAction(_backwardAction);
     calendarView->addAction(_settingsAction);
+    calendarView->addAction(_bookmarkAddAction);
 
     connect(calendarView, SIGNAL(linkClicked(QUrl)), this, SLOT(clickedLink(QUrl)));
     connect(calendarView, SIGNAL(loadStarted()), this, SLOT(_loadStarted()));
@@ -196,9 +215,7 @@ QByteArray MainWindow::buildScript()
   QString param2 = "";
   QString param3 = "";
 
-  if (settingsWidget->showDayIcon()) param1 = ICON_SCRIPT;
-
-  //param2.append( QString("&dayicon=%1").arg(settingsWidget->showDayIcon()) );
+  param2.append( QString("&dayicon=%1").arg(settingsWidget->showDayIcon()) );
   param2.append( QString("&target=0") ); // open links in old (current) window
   param2.append( QString("&name=0&life=1") );
   param2.append( QString("&images=%1").arg(settingsWidget->showImages()) );
@@ -216,19 +233,13 @@ QByteArray MainWindow::buildScript()
   param2.append( QString("&hrams=0&hram=0") );
   QDate date = settingsWidget->selectedDate();
   //qDebug()<<date.toString(Qt::ISODate)<<" "<<QDate::fromJulianDay(date.toJulianDay()-13);
-  if (settingsWidget->showLiturgy())
-    {
-      QString _date = date.toString(Qt::ISODate);
-      QStringList _d = _date.split("-");
-      _d.removeFirst();
-      param2.append(QString("&date=%1").arg(_d.join("")));
-      param3 = LITURGY.arg(_date);
-    };
-  QString _date = QDate::fromJulianDay(date.toJulianDay()-13).toString(Qt::ISODate);
+  QString _date = date.toString(Qt::ISODate);
   QStringList _d = _date.split("-");
-  param3.append(FULLDAY.arg(_d.join(""))).append(DOC1).append(SEARCH);
+  _d.removeFirst();
+  param2.append(QString("&date=%1").arg(_d.join("")));
+  if (settingsWidget->showLiturgy()) param3 = LITURGY.arg(_date);
 
-  QString data = SCRIPT.arg(fonFile->fileName());
+  QString data = SCRIPT.arg(fonFile->fileName()).arg(SEARCH);
   data.append(param1);
   data.append(SCRIPT1);
   data.append(param2);
@@ -412,4 +423,26 @@ void MainWindow::zoomDownAction()
 void MainWindow::zoomOrigAction()
 {
   calendarView->setZoomFactor(firstZoom);
+}
+void MainWindow::addBookmarkAction()
+{
+  qDebug()<< "NAME <||>"<<calendarView->url();
+  /* url already exist in bookmarks
+   * set NAME of bookmark in Dialog
+   * save in bookmarkFile
+   * reinit bookmarkMenu
+   */
+}
+
+void MainWindow::initBookmarks()
+{
+  QStringList bookmarks;
+  bookmarks = settingsWidget->initBookmarks();
+  for (int i = 0; i < bookmarks.size(); ++i) toolBar->bookmarkMenu->addAction(bookmarks.at(i));
+}
+void MainWindow::loadBookmarkLink(QAction* act)
+{
+  QString link;
+  link = settingsWidget->readBookmarkLink(act->text());
+  calendarView->load(QUrl::fromUserInput(link));
 }

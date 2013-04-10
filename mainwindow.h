@@ -24,6 +24,7 @@
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
 #include "settingswidget.h"
+#include "toolbar.h"
 
 class MainWindow : public QMainWindow
 {
@@ -32,6 +33,8 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+    SettingsWidget *settingsWidget;
 
 private:
     qreal firstZoom;
@@ -48,8 +51,9 @@ private:
     QAction *_zoomOrigAction;
     QAction *_zoomDownAction;
     QAction *_settingsAction;
+    QAction *_bookmarkAddAction;
+    QAction *_bookmarkDelAction;
     QDockWidget *settingsDock;
-    SettingsWidget *settingsWidget;
     QScrollArea *scroll;
     void initialSettingsDock();
     void closeEvent(QCloseEvent *);
@@ -61,7 +65,7 @@ private:
     QNetworkAccessManager *manager;
     QNetworkDiskCache *diskCache;
     QString cacheDir;
-    QToolBar *toolBar;
+    ToolBar *toolBar;
     QProgressBar *progress;
     QStatusBar *StatusBar;
 
@@ -69,6 +73,7 @@ signals:
     void cacheChecked();
 
 private slots:
+    void initAppWidgets();
     void initActions();
     void initToolBar();
     void initTrayIcon();
@@ -94,6 +99,9 @@ private slots:
     void _loadStarted();
     void _loadFinished(bool);
     void _loadProgress(int);
+    void addBookmarkAction();
+    void initBookmarks();
+    void loadBookmarkLink(QAction*);
 };
 
 #endif // MAINWINDOW_H

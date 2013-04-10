@@ -14,8 +14,10 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    settingswidget.cpp
+    settingswidget.cpp \
+    toolbar.cpp
 
 HEADERS  += mainwindow.h \
-    settingswidget.h
+    settingswidget.h \
+    toolbar.h
 
