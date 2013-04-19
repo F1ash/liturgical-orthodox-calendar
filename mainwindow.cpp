@@ -298,13 +298,19 @@ void MainWindow::initBookmarks()
   for (int i = 0; i < bookmarks.size(); ++i)
     {
       toolBar->bookmarkMenu->addAction(bookmarks.at(i));
-      if (i==2) toolBar->bookmarkMenu->addSeparator();
+      if (i==2)
+        {
+          toolBar->bookmarkMenu->addAction(QString::fromUtf8("Начальная страница"));
+          toolBar->bookmarkMenu->addSeparator();
+        };
     };
 }
 void MainWindow::loadBookmarkLink(QAction* act)
 {
   QString link;
-  link = settingsWidget->readBookmarkLink(act->text());
+  if ( act->text() == QString::fromUtf8("Начальная страница") )
+    link = netManager->baseFile->fileName();
+  else link = settingsWidget->readBookmarkLink(act->text());
   calendarView->load(QUrl::fromUserInput(link));
 }
 void MainWindow::removeBookmark(QString key)
