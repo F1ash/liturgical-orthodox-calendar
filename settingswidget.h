@@ -13,22 +13,6 @@ public:
   ~SettingsWidget();
 
   QSettings *settings;
-  int showInStart() const;
-  int showDayIcon() const;
-  int showImages() const;
-  int showBold() const;
-  int showVek() const;
-  int showPara() const;
-  int showTipikon() const;
-  int showTrapeza() const;
-  int showFeofan() const;
-  int showChurch() const;
-  int showChten() const;
-  int showLiturgy() const;
-  void setFocusToSettings();
-  void set_Geometry(QByteArray geometry);
-  QByteArray get_Geometry() const;
-  QDate selectedDate() const;
 
 signals:
   void settingsApplied();
@@ -61,14 +45,34 @@ private:
   int _showChten;
   int _showLiturgy;
   QByteArray _geometry;
+  int _toolBarArea;
   QPushButton *apply;
   QVBoxLayout *vbox;
-  void initVariables();
-  void readSettings();
 
 public slots:
+  int showInStart() const;
+  int showDayIcon() const;
+  int showImages() const;
+  int showBold() const;
+  int showVek() const;
+  int showPara() const;
+  int showTipikon() const;
+  int showTrapeza() const;
+  int showFeofan() const;
+  int showChurch() const;
+  int showChten() const;
+  int showLiturgy() const;
+  void setFocusToSettings();
+  void set_Geometry(QByteArray geometry);
+  void set_ToolBarArea(int i);
+  QByteArray get_Geometry() const;
+  Qt::ToolBarArea get_ToolBarArea() const;
+  QDate selectedDate() const;
   QStringList initBookmarks() const;
   QString readBookmarkLink(QString key) const;
+
 private slots:
+  void initVariables();
+  void readSettings();
   void apply_Settings();
 };

@@ -2,29 +2,16 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QSystemTrayIcon>
-#include <QMenu>
-#include <QString>
-#include <QIcon>
-#include <QtWebKit/QWebView>
 #include <QDockWidget>
 #include <QCloseEvent>
-#include <QSettings>
-#include <QTemporaryFile>
-#include <QByteArray>
-#include <QDate>
-#include <QDir>
 #include <QScrollArea>
-#include <QToolBar>
-#include <QStatusBar>
-#include <QProgressBar>
-#include <QDesktopServices>
-#include <QNetworkDiskCache>
-#include <QNetworkRequest>
-#include <QNetworkReply>
-#include <QNetworkAccessManager>
 #include "settingswidget.h"
+#include "networkstuff.h"
+#include "traywidget.h"
 #include "toolbar.h"
+#include "calendarwidget.h"
+#include "addbookmarkdialog.h"
+#include "statusbar.h"
 
 class MainWindow : public QMainWindow
 {
@@ -34,47 +21,23 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    SettingsWidget *settingsWidget;
-
 private:
     qreal firstZoom;
-    QSystemTrayIcon *trayIcon;
-    QWebView *calendarView;
-    QMenu *trayIconMenu;
-    QAction *hideAction;
-    QAction *closeAction;
-    QAction *_reloadAction;
-    QAction *_stopAction;
-    QAction *_forwardAction;
-    QAction *_backwardAction;
-    QAction *_zoomUpAction;
-    QAction *_zoomOrigAction;
-    QAction *_zoomDownAction;
-    QAction *_settingsAction;
-    QAction *_bookmarkAddAction;
-    QAction *_bookmarkDelAction;
-    QDockWidget *settingsDock;
-    QScrollArea *scroll;
-    void initialSettingsDock();
-    void closeEvent(QCloseEvent *);
     bool closeFlag;
-    QString fileTemplate;
-    QTemporaryFile *baseFile;
-    QTemporaryFile *fonFile;
-    QTemporaryFile *iconFile;
-    QNetworkAccessManager *manager;
-    QNetworkDiskCache *diskCache;
-    QString cacheDir;
+    QScrollArea *scroll;
+    QDockWidget *settingsDock;
+    SettingsWidget *settingsWidget;
+    NetworkManager *netManager;
+    TrayIcon *trayIcon;
     ToolBar *toolBar;
-    QProgressBar *progress;
-    QStatusBar *StatusBar;
-
-signals:
-    void cacheChecked();
+    StatusBar *statusBar;
+    CalendarView *calendarView;
+    BookmarkDialog *dialog;
 
 private slots:
+    void initialSettingsDock();
+    void initNetworkStuff();
     void initAppWidgets();
-    void initActions();
     void initToolBar();
     void initTrayIcon();
     void initCalendar();
@@ -87,22 +50,21 @@ private slots:
     void stopAction();
     void forwardAction();
     void backwardAction();
+    void closeEvent(QCloseEvent *);
     void zoomUpAction();
     void zoomOrigAction();
     void zoomDownAction();
     void closeCalendar();
     void trayIconActivated(QSystemTrayIcon::ActivationReason r);
     void reloadCalendar();
-    void checkCache();
-    void replyFinished(QNetworkReply*);
     void clickedLink(QUrl);
-    void _loadStarted();
-    void _loadFinished(bool);
-    void _loadProgress(int);
-    void addBookmarkAction();
+    void addBookmark(QString &);
+    void addBookmarkAction(QString &);
+    void addBookmarkDialog();
     void initBookmarks();
     void loadBookmarkLink(QAction*);
     void removeBookmark(QString);
+    void reloadAppAction();
 };
 
 #endif // MAINWINDOW_H

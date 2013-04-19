@@ -15,9 +15,20 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     settingswidget.cpp \
-    toolbar.cpp
+    toolbar.cpp \
+    addbookmarkdialog.cpp \
+    data.cpp \
+    statusbar.cpp \
+    networkstuff.cpp \
+    traywidget.cpp \
+    calendarwidget.cpp
 
 HEADERS  += mainwindow.h \
     settingswidget.h \
-    toolbar.h
+    toolbar.h \
+    addbookmarkdialog.h \
+    statusbar.h \
+    networkstuff.h \
+    traywidget.h \
+    calendarwidget.h
 

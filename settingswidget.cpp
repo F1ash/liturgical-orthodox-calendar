@@ -149,10 +149,11 @@ void SettingsWidget::initVariables()
   _showChten = settings->value("ShowChten", 1).toInt() / 2;
   _showLiturgy = settings->value("ShowLiturgy", 0).toInt() / 2;
   _geometry = settings->value("Geometry").toByteArray();
+  _toolBarArea = settings->value("ToolBarArea").toByteArray().toInt();
 }
 QStringList SettingsWidget::initBookmarks() const
 {
-  settings->beginGroup("bookmarks");
+  settings->beginGroup("default bookmarks");
   QStringList keys = settings->allKeys();
   if (keys.isEmpty())
     {
@@ -161,6 +162,9 @@ QStringList SettingsWidget::initBookmarks() const
       settings->setValue(QString::fromUtf8("Православная Энциклопедия"), QString::fromUtf8("http://www.pravenc.ru/"));
       keys = settings->allKeys();
     };
+  settings->endGroup();
+  settings->beginGroup("bookmarks");
+  keys.append(settings->allKeys());
   settings->endGroup();
   return keys;
 }
@@ -242,6 +246,33 @@ QByteArray SettingsWidget::get_Geometry() const
 {
   return _geometry;
 }
+void SettingsWidget::set_ToolBarArea(int i)
+{
+  _toolBarArea = i;
+  settings->setValue("ToolBarArea", i);
+}
+Qt::ToolBarArea SettingsWidget::get_ToolBarArea() const
+{
+  Qt::ToolBarArea result;
+  switch (_toolBarArea) {
+  case 1:
+    result = Qt::LeftToolBarArea;
+    break;
+  case 2:
+    result = Qt::RightToolBarArea;
+    break;
+  case 4:
+    result = Qt::TopToolBarArea;
+    break;
+  case 8:
+    result = Qt::BottomToolBarArea;
+    break;
+  default:
+    result = Qt::TopToolBarArea;
+    break;
+  };
+  return result;
+}
 QDate SettingsWidget::selectedDate() const
 {
   return customDate->selectedDate();
@@ -252,5 +283,11 @@ QString SettingsWidget::readBookmarkLink(QString key) const
   settings->beginGroup("bookmarks");
   link = settings->value(key, QVariant("")).toString();
   settings->endGroup();
+  if (link.isEmpty())
+    {
+      settings->beginGroup("default bookmarks");
+      link = settings->value(key, QVariant("")).toString();
+      settings->endGroup();
+    };
   return link;
 }
