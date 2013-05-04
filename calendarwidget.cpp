@@ -10,6 +10,7 @@ CalendarView::CalendarView(QWidget *parent = 0)
   settings()->setOfflineStorageDefaultQuota(50000000);
   setContextMenuPolicy(Qt::ActionsContextMenu);
   page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
+  page()->settings()->setMaximumPagesInCache(100);
 
   initActions();
 }
@@ -49,4 +50,10 @@ void CalendarView::initActions()
   addAction(_backwardAction);
   //addAction(_settingsAction);
   addAction(_bookmarkAddAction);
+}
+void CalendarView::loader(QUrl& url)
+{
+  QNetworkRequest request = QNetworkRequest(url);
+  request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
+  this->load(request);
 }

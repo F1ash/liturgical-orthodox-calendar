@@ -97,6 +97,7 @@ void MainWindow::initCalendar()
   calendarView->settings()->setOfflineStoragePath(netManager->cacheDir);
   calendarView->settings()->setIconDatabasePath(netManager->cacheDir);
   calendarView->settings()->setLocalStoragePath(netManager->cacheDir);
+  calendarView->page()->setNetworkAccessManager(netManager);
 
   connect(calendarView, SIGNAL(linkClicked(QUrl)), this, SLOT(clickedLink(QUrl)));
   connect(calendarView, SIGNAL(loadStarted()), statusBar, SLOT(_loadStarted()));
@@ -243,7 +244,7 @@ void MainWindow::reloadCalendar()
 void MainWindow::clickedLink(QUrl url)
 {
   //qDebug()<<url;
-  calendarView->load(url);
+  calendarView->loader(url);
 }
 void MainWindow::zoomUpAction()
 {
@@ -311,7 +312,8 @@ void MainWindow::loadBookmarkLink(QAction* act)
   if ( act->text() == QString::fromUtf8("Начальная страница") )
     link = netManager->baseFile->fileName();
   else link = settingsWidget->readBookmarkLink(act->text());
-  calendarView->load(QUrl::fromUserInput(link));
+  QUrl url = QUrl::fromUserInput(link);
+  calendarView->loader(url);
 }
 void MainWindow::removeBookmark(QString key)
 {

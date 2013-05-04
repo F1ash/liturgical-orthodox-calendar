@@ -1,6 +1,9 @@
 
 #include <QtWebKit/QWebView>
 #include <QAction>
+#include <QUrl>
+#include <QNetworkRequest>
+#include <QNetworkAccessManager>
 
 class CalendarView : public QWebView
 {
@@ -15,6 +18,9 @@ public :
   QAction *_backwardAction;
   //QAction *_settingsAction;
   QAction *_bookmarkAddAction;
+
+public slots :
+  void loader(QUrl& url);
 
 private slots :
   void initActions();
