@@ -33,6 +33,7 @@ private:
     StatusBar *statusBar;
     CalendarView *calendarView;
     BookmarkDialog *dialog;
+    QStringList history;
 
 private slots:
     void initialSettingsDock();
@@ -65,6 +66,9 @@ private slots:
     void loadBookmarkLink(QAction*);
     void removeBookmark(QString);
     void reloadAppAction();
+    void initHistory(QUrl);
+    void removeHistoryItem(QString);
+    void loadHistoryLink(QAction*);
 };
 
 #endif // MAINWINDOW_H

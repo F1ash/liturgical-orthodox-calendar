@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
   setMinimumSize(100, 100);
   statusBar = new StatusBar(this);
   setStatusBar(statusBar);
+  QStringList history = QStringList();
 
   initNetworkStuff();
 }
@@ -68,6 +69,8 @@ void MainWindow::initToolBar()
   this->addToolBar(settingsWidget->get_ToolBarArea(), toolBar);
   connect(toolBar->bookmarkMenu, SIGNAL(triggered(QAction*)), this, SLOT(loadBookmarkLink(QAction*)));
   connect(toolBar, SIGNAL(actionRemoved(QString)), this, SLOT(removeBookmark(QString)));
+  connect(toolBar, SIGNAL(historyItemRemoved(QString)), this, SLOT(removeHistoryItem(QString)));
+  connect(toolBar->historyMenu, SIGNAL(triggered(QAction*)), this, SLOT(loadHistoryLink(QAction*)));
   connect(toolBar->_reloadAction, SIGNAL(triggered()), this, SLOT(reloadAction()));
   connect(toolBar->_stopAction, SIGNAL(triggered()), this, SLOT(stopAction()));
   connect(toolBar->_forwardAction, SIGNAL(triggered()), this, SLOT(forwardAction()));
@@ -245,6 +248,7 @@ void MainWindow::clickedLink(QUrl url)
 {
   //qDebug()<<url;
   calendarView->loader(url);
+  initHistory(url);
 }
 void MainWindow::zoomUpAction()
 {
@@ -314,6 +318,7 @@ void MainWindow::loadBookmarkLink(QAction* act)
   else link = settingsWidget->readBookmarkLink(act->text());
   QUrl url = QUrl::fromUserInput(link);
   calendarView->loader(url);
+  initHistory(url);
 }
 void MainWindow::removeBookmark(QString key)
 {
@@ -334,4 +339,22 @@ void MainWindow::reloadAppAction()
   reloadCalendar();
   calendarView->show();
   changeCalendarVisibility(true);
+}
+void MainWindow::initHistory(QUrl url)
+{
+  //qDebug()<<url.toString();
+  if ( !history.contains(url.toString()) )
+    {
+      toolBar->historyMenu->addAction(url.toString());
+      history.append( url.toString() );
+    };
+}
+void MainWindow::removeHistoryItem(QString s)
+{
+  history.removeAll(s);
+}
+void MainWindow::loadHistoryLink(QAction* act)
+{
+  QUrl url = QUrl::fromUserInput(act->text());
+  calendarView->loader(url);
 }

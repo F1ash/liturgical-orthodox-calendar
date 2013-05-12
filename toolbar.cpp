@@ -62,6 +62,8 @@ void ToolBar::initActions()
   _bookmarkAddAction->setIcon ( QIcon().fromTheme("bookmark-new") );
   _clearAction = new QAction(QString::fromUtf8("Очистить"), this);
   connect(_clearAction, SIGNAL(triggered()), this, SLOT(clearAction()));
+  _clearHistoryAction = new QAction(QString::fromUtf8("Очистить"), this);
+  connect(_clearHistoryAction, SIGNAL(triggered()), this, SLOT(clearHistoryAction()));
 
   addAction(_reloadAction);
   addAction(_stopAction);
@@ -77,6 +79,7 @@ void ToolBar::initActions()
   addToolButton();
   addAction(_bookmarkAddAction);
   addSeparator();
+  addHistoryToolButton();
 }
 void ToolBar::addToolButton()
 {
@@ -103,4 +106,30 @@ void ToolBar::clearAction()
 {
   bookmarkMenu->removeAction(currentAction);
   emit actionRemoved(currentAction->text());
+}
+void ToolBar::addHistoryToolButton()
+{
+  historyButton = new QToolButton(this);
+  historyButton->setCheckable(false);
+  historyButton->setIcon(QIcon::fromTheme("address-book-new"));
+  historyButton->setToolTip(QString::fromUtf8("История сессии"));
+  connect(historyButton, SIGNAL(clicked(bool)), historyButton, SLOT(showMenu()));
+  _historyAction = this->addWidget(historyButton);
+  historyMenu = new QMenu(historyButton);
+  historyMenu->setContextMenuPolicy ( Qt::CustomContextMenu );
+  connect(historyMenu, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showHistoryMenu(QPoint)));
+  historyButton->setMenu(historyMenu);
+  clearHistoryMenu = new QMenu(historyMenu);
+  clearHistoryMenu->addAction(_clearHistoryAction);
+}
+void ToolBar::showHistoryMenu(QPoint pos)
+{
+  clearHistoryMenu->show();
+  clearHistoryMenu->move(historyMenu->mapToGlobal(pos));
+  currentAction = historyMenu->activeAction();
+}
+void ToolBar::clearHistoryAction()
+{
+  historyMenu->removeAction(currentAction);
+  emit historyItemRemoved(currentAction->text());
 }

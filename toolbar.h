@@ -21,15 +21,21 @@ public:
   QAction *_bookmarkAddAction;
 
   QMenu *bookmarkMenu;
+  QMenu *historyMenu;
 
 signals:
   void actionRemoved(QString);
+  void historyItemRemoved(QString);
 
 private:
   QToolButton *bookmarkButton;
   QAction *_bookmarkAction;
   QMenu *clearMenu;
+  QToolButton *historyButton;
+  QAction *_historyAction;
+  QMenu *clearHistoryMenu;
   QAction *_clearAction;
+  QAction *_clearHistoryAction;
   QAction *currentAction;
 
 private slots:
@@ -37,5 +43,8 @@ private slots:
   void addToolButton();
   void showCustomMenu(QPoint);
   void clearAction();
+  void addHistoryToolButton();
+  void showHistoryMenu(QPoint);
+  void clearHistoryAction();
 };
 
