@@ -68,6 +68,7 @@ public slots:
   QByteArray get_Geometry() const;
   Qt::ToolBarArea get_ToolBarArea() const;
   QDate selectedDate() const;
+  void setSelectedDate(QDate);
   QStringList initBookmarks() const;
   QString readBookmarkLink(QString key) const;
 

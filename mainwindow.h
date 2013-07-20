@@ -69,6 +69,8 @@ private slots:
     void initHistory(QUrl);
     void removeHistoryItem(QString);
     void loadHistoryLink(QAction*);
+    void showPrevDay();
+    void showNextDay();
 };
 
 #endif // MAINWINDOW_H

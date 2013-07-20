@@ -80,6 +80,8 @@ void MainWindow::initToolBar()
   connect(toolBar->_zoomDownAction, SIGNAL(triggered()), this, SLOT(zoomDownAction()));
   connect(toolBar->_settingsAction, SIGNAL(triggered()), this, SLOT(settingsAction()));
   connect(toolBar->_bookmarkAddAction, SIGNAL(triggered()), this, SLOT(addBookmarkDialog()));
+  connect(toolBar->_prevDayAction, SIGNAL(triggered()), this, SLOT(showPrevDay()));
+  connect(toolBar->_nextDayAction, SIGNAL(triggered()), this, SLOT(showNextDay()));
 }
 void MainWindow::initTrayIcon()
 {
@@ -357,4 +359,16 @@ void MainWindow::loadHistoryLink(QAction* act)
 {
   QUrl url = QUrl::fromUserInput(act->text());
   calendarView->loader(url);
+}
+void MainWindow::showPrevDay()
+{
+  QDate date = settingsWidget->selectedDate();
+  settingsWidget->setSelectedDate(date.addDays(-1));
+  reloadCalendar();
+}
+void MainWindow::showNextDay()
+{
+  QDate date = settingsWidget->selectedDate();
+  settingsWidget->setSelectedDate(date.addDays(1));
+  reloadCalendar();
 }

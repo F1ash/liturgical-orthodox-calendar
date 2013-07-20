@@ -277,6 +277,10 @@ QDate SettingsWidget::selectedDate() const
 {
   return customDate->selectedDate();
 }
+void SettingsWidget::setSelectedDate(QDate d)
+{
+  customDate->setSelectedDate(d);
+}
 QString SettingsWidget::readBookmarkLink(QString key) const
 {
   QString link;

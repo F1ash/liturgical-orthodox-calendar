@@ -19,6 +19,8 @@ public:
   QAction *_zoomDownAction;
   QAction *_settingsAction;
   QAction *_bookmarkAddAction;
+  QAction *_nextDayAction;
+  QAction *_prevDayAction;
 
   QMenu *bookmarkMenu;
   QMenu *historyMenu;

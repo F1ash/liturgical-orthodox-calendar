@@ -39,6 +39,10 @@ ToolBar::~ToolBar()
   _settingsAction = 0;
   delete _bookmarkAddAction;
   _bookmarkAddAction = 0;
+  delete _nextDayAction;
+  _nextDayAction = 0;
+  delete _prevDayAction;
+  _prevDayAction = 0;
 }
 void ToolBar::initActions()
 {
@@ -64,6 +68,10 @@ void ToolBar::initActions()
   connect(_clearAction, SIGNAL(triggered()), this, SLOT(clearAction()));
   _clearHistoryAction = new QAction(QString::fromUtf8("Очистить"), this);
   connect(_clearHistoryAction, SIGNAL(triggered()), this, SLOT(clearHistoryAction()));
+  _prevDayAction = new QAction(QString().fromUtf8("Предыдущий день"), this);
+  _prevDayAction->setIcon ( QIcon().fromTheme("draw-arrow-back") );
+  _nextDayAction = new QAction(QString().fromUtf8("Следующий день"), this);
+  _nextDayAction->setIcon ( QIcon().fromTheme("draw-arrow-forward") );
 
   addAction(_reloadAction);
   addAction(_stopAction);
@@ -80,6 +88,9 @@ void ToolBar::initActions()
   addAction(_bookmarkAddAction);
   addSeparator();
   addHistoryToolButton();
+  addSeparator();
+  addAction(_prevDayAction);
+  addAction(_nextDayAction);
 }
 void ToolBar::addToolButton()
 {
