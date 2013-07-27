@@ -231,6 +231,7 @@ void MainWindow::closeCalendar()
   closeFlag = true;
   settingsWidget->set_Geometry(this->saveGeometry());
   settingsWidget->set_ToolBarArea(this->toolBarArea(toolBar));
+  settingsWidget->settings->sync();
   this->close();
 }
 void MainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason r)
@@ -301,12 +302,12 @@ void MainWindow::initBookmarks()
   toolBar->bookmarkMenu->setCursor(QCursor(Qt::PointingHandCursor));
   //toolBar->bookmarkMenu->setCursor(QCursor(QPixmap(netManager->iconFile->fileName())));
   toolBar->bookmarkMenu->setToolTip(QString::fromUtf8("ЗАКЛАДКИ"));
-  toolBar->bookmarkMenu->addSeparator();
-  for (int i = 0; i < bookmarks.size(); ++i)
+  for (int i = 0; i < bookmarks.count(); i++)
     {
       toolBar->bookmarkMenu->addAction(bookmarks.at(i));
-      if (i==2)
+      if (i==bookmarks.size()-1)
         {
+          toolBar->bookmarkMenu->addSeparator();
           toolBar->bookmarkMenu->addAction(QString::fromUtf8("Начальная страница"));
           toolBar->bookmarkMenu->addSeparator();
         };
