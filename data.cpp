@@ -1,7 +1,7 @@
 #include <QString>
 
 QString SCRIPT = QString::fromUtf8("<html><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /><style> form.fixed { position: fixed; background-color: rgba(255, 255, 255, 0.75); top: 0px; left: 5px; z-index: 999; } #top { position: relative; top: 45px; } </style><body background=\"%1\" >%2<h3 id =\"top\" align=\"center\"><font color=\"red\">ПРАВОСЛАВНЫЙ КАЛЕНДАРЬ</font></h3> <div id =\"top\" align=\"center\">");
-QString SCRIPT1 = QString::fromUtf8("</div> <div id =\"top\" ><script language=\"Javascript\"> var d=new Date(); var to=-4-d.getTimezoneOffset()/60; document.write ( '<script language=\"Javascript\" src=\"http://script.days.ru/calendar.php?tmshift='+to +'");
+QString SCRIPT1 = QString::fromUtf8("</div> <div id =\"top\" ><script language=\"Javascript\"> var d=new Date(); var to=-4-d.getTimezoneOffset()/60; document.write ( '<script language=\"Javascript\" src=\"http://script.pravoslavie.ru/calendar.php?tmshift='+to +'");
 QString SCRIPT2 = QString::fromUtf8("\"><\\/script>');</script></br>");
 QString SCRIPT3 = QString::fromUtf8("</div></body></html>");
 
