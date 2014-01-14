@@ -149,7 +149,7 @@ QByteArray MainWindow::buildScript()
   //qDebug()<<date.toString(Qt::ISODate)<<" "<<QDate::fromJulianDay(date.toJulianDay()-13);
   QString _date = date.toString(Qt::ISODate);
   QStringList _d = _date.split("-");
-  _d.removeFirst();
+  //_d.removeFirst();
   param2.append(QString("&date=%1").arg(_d.join("")));
   if (settingsWidget->showLiturgy()) param3 = LITURGY.arg(_date);
 

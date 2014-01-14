@@ -61,7 +61,7 @@ void ToolBar::initActions()
   _zoomDownAction = new QAction(QString().fromUtf8("Уменьшить"), this);
   _zoomDownAction->setIcon ( QIcon().fromTheme("zoom-out") );
   _settingsAction = new QAction(QString().fromUtf8("Настройки"), this);
-  _settingsAction->setIcon ( QIcon().fromTheme("settings") );
+  _settingsAction->setIcon ( QIcon().fromTheme("configure") );
   _bookmarkAddAction = new QAction(QString().fromUtf8("Добавить в закладки"), this);
   _bookmarkAddAction->setIcon ( QIcon().fromTheme("bookmark-new") );
   _clearAction = new QAction(QString::fromUtf8("Очистить"), this);

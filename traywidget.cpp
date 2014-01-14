@@ -6,9 +6,9 @@ TrayIcon::TrayIcon(QWidget *parent = 0)
   setIcon(QIcon::fromTheme("xorg"));
   hideAction = new QAction(QString().fromUtf8(""), this);
   reloadAction = new QAction(QString().fromUtf8("Перезапустить"), this);
-  reloadAction->setIcon ( QIcon().fromTheme("view-refresh") );
+  reloadAction->setIcon ( QIcon::fromTheme("view-refresh") );
   closeAction = new QAction(QString().fromUtf8("Закрыть"), this);
-  closeAction->setIcon ( QIcon().fromTheme("shutdown") );
+  closeAction->setIcon ( QIcon::fromTheme("application-exit") );
 
   trayIconMenu = new QMenu(parent);
   trayIconMenu->addAction(hideAction);
@@ -17,7 +17,7 @@ TrayIcon::TrayIcon(QWidget *parent = 0)
   trayIconMenu->addSeparator();
   trayIconMenu->addAction(closeAction);
 
-  setToolTip(QString().fromLocal8Bit("Православный Календарь 2013"));
+  setToolTip(QString().fromLocal8Bit("Православный Календарь 2014"));
   setContextMenu(trayIconMenu);
   show();
 }
