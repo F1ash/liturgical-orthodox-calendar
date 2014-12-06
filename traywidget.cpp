@@ -17,7 +17,14 @@ TrayIcon::TrayIcon(QWidget *parent = 0)
   trayIconMenu->addSeparator();
   trayIconMenu->addAction(closeAction);
 
-  setToolTip(QString().fromLocal8Bit("Православный Календарь 2014"));
+  time_t rawtime;
+  struct tm * timeinfo;
+  char buffer [80];
+  time (&rawtime);
+  timeinfo = localtime (&rawtime);
+  strftime (buffer,80,"%Y",timeinfo);
+  QString _title = QString().fromLocal8Bit("Православный Календарь");
+  setToolTip(QString("%1 %2").arg(_title).arg(buffer));
   setContextMenu(trayIconMenu);
   show();
 }

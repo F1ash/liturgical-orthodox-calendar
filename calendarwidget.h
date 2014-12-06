@@ -1,5 +1,5 @@
 
-#include <QtWebKit/QWebView>
+#include <QWebView>
 #include <QAction>
 #include <QUrl>
 #include <QNetworkRequest>
@@ -7,7 +7,7 @@
 
 class CalendarView : public QWebView
 {
-  Q_OBJECT;
+  Q_OBJECT
 public :
   CalendarView(QWidget *parent);
   ~CalendarView();

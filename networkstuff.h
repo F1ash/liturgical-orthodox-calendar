@@ -9,7 +9,7 @@
 
 class NetworkManager : public QNetworkAccessManager
 {
-  Q_OBJECT;
+  Q_OBJECT
 public :
   NetworkManager(QObject *parent);
   ~NetworkManager();

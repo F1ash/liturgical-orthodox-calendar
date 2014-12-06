@@ -3,12 +3,16 @@
 NetworkManager::NetworkManager(QObject *parent = 0)
   : QNetworkAccessManager(parent)
 {
+#if QT_VERSION<0x050000
   cacheDir = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
-  while (cacheDir.endsWith(QDir::separator()))
-    {
+#else
+  cacheDir = QStandardPaths::standardLocations(QStandardPaths::CacheLocation).first();
+#endif
+  while (cacheDir.endsWith(QDir::separator())) {
       cacheDir.remove(cacheDir.length()-1, 1);
-    };
-  cacheDir.append(QDir::separator()).append("LiturgicalOrthodoxCalendar");
+  };
+  cacheDir.append(QDir::separator());
+  cacheDir.append("LiturgicalOrthodoxCalendar");
 
   diskCache = new QNetworkDiskCache(this);
   diskCache->setCacheDirectory(cacheDir);
