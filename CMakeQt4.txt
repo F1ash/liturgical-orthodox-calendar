@@ -1,5 +1,6 @@
 
 find_package (Qt4 COMPONENTS QtCore QtGui QtNetwork QtWebKit REQUIRED)
 include (${QT_USE_FILE})
+qt4_add_resources(QRC_RCC ${QRC_SRC})
 qt4_wrap_cpp (MOC_SOURCES ${HEADERS})
 set (BUILD_PROJECT_LIBRARIES ${QT_LIBRARIES})

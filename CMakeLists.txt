@@ -51,6 +51,10 @@ set (SOURCES
   traywidget.cpp)
 set (SOURCES_DIRS . )
 
+set(QRC_SRC
+    liturgical_calendar.qrc
+)
+
 project (${PROJECT_NAME})
 include_directories (${CMAKE_CURRENT_BINARY_DIR} ${SOURCES_DIRS})
 
@@ -62,7 +66,7 @@ else ( QT4_BUILD )
 endif( QT4_BUILD )
 ##
 
-add_executable (${PROJECT_NAME} ${HEADERS} ${SOURCES} ${MOC_SOURCES})
+add_executable (${PROJECT_NAME} ${HEADERS} ${SOURCES} ${MOC_SOURCES} ${QRC_RCC})
 target_link_libraries (${PROJECT_NAME} ${BUILD_PROJECT_LIBRARIES})
 
 install (TARGETS ${PROJECT_NAME} DESTINATION bin)

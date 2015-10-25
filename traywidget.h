@@ -4,12 +4,11 @@
 
 class TrayIcon : public QSystemTrayIcon
 {
-  Q_OBJECT;
+  Q_OBJECT
 public :
-  TrayIcon(QWidget *parent);
-  ~TrayIcon();
+  explicit TrayIcon(QWidget *parent = 0);
 
-  QAction *hideAction;
+  //QAction *hideAction;
   QAction *reloadAction;
   QAction *closeAction;
 

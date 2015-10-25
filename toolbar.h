@@ -5,10 +5,9 @@
 
 class ToolBar : public QToolBar
 {
-  Q_OBJECT;
+  Q_OBJECT
 public:
-  ToolBar(QWidget *parent);
-  ~ToolBar();
+  explicit ToolBar(QWidget *parent = 0);
 
   QAction *_reloadAction;
   QAction *_stopAction;

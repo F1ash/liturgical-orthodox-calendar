@@ -1,7 +1,7 @@
 #include "toolbar.h"
 #include <QDebug>
 
-ToolBar::ToolBar (QWidget *parent = 0) : QToolBar(parent)
+ToolBar::ToolBar (QWidget *parent) : QToolBar(parent)
 {
   setAllowedAreas(Qt::AllToolBarAreas);
   setMovable(true);
@@ -9,41 +9,7 @@ ToolBar::ToolBar (QWidget *parent = 0) : QToolBar(parent)
 
   initActions();
 }
-ToolBar::~ToolBar()
-{
-  clearMenu->clear();
-  bookmarkMenu->clear();
-  delete clearMenu;
-  clearMenu = 0;
-  delete _clearAction;
-  _clearAction = 0;
-  delete bookmarkMenu;
-  bookmarkMenu = 0;
-  delete bookmarkButton;
-  bookmarkButton = 0;
-  delete _reloadAction;
-  _reloadAction = 0;
-  delete _stopAction;
-  _stopAction = 0;
-  delete _forwardAction;
-  _forwardAction = 0;
-  delete _backwardAction;
-  _backwardAction = 0;
-  delete _zoomUpAction;
-  _zoomUpAction = 0;
-  delete _zoomOrigAction;
-  _zoomOrigAction = 0;
-  delete _zoomDownAction;
-  _zoomDownAction = 0;
-  delete _settingsAction;
-  _settingsAction = 0;
-  delete _bookmarkAddAction;
-  _bookmarkAddAction = 0;
-  delete _nextDayAction;
-  _nextDayAction = 0;
-  delete _prevDayAction;
-  _prevDayAction = 0;
-}
+
 void ToolBar::initActions()
 {
   _reloadAction = new QAction(QString().fromUtf8("Обновить"), this);

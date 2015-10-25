@@ -1,6 +1,8 @@
 #include "addbookmarkdialog.h"
 
-BookmarkDialog::BookmarkDialog(QWidget *parent=0, Qt::WindowFlags f = 0 ) : QDialog(parent, f)
+BookmarkDialog::BookmarkDialog(
+        QWidget *parent, Qt::WindowFlags f)
+    : QDialog(parent, f)
 {
   _bookmarkName = QString();
   bookmarkNameEdit = new QLineEdit(this);
@@ -17,19 +19,7 @@ BookmarkDialog::BookmarkDialog(QWidget *parent=0, Qt::WindowFlags f = 0 ) : QDia
   connect(ok, SIGNAL(clicked()), this, SLOT(setBookmarkName()));
   connect(cancel, SIGNAL(clicked()), this, SLOT(closeDialog()));
 }
-BookmarkDialog::~BookmarkDialog()
-{
-  delete bookmarkNameEdit;
-  bookmarkNameEdit = 0;
-  delete ok;
-  ok = 0;
-  delete cancel;
-  cancel = 0;
-  delete buttonLayout;
-  buttonLayout = 0;
-  delete myLayout;
-  myLayout = 0;
-}
+
 void BookmarkDialog::setBookmarkName()
 {
   _bookmarkName = bookmarkNameEdit->text();

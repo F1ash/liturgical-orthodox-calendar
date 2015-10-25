@@ -11,8 +11,7 @@ class NetworkManager : public QNetworkAccessManager
 {
   Q_OBJECT
 public :
-  NetworkManager(QObject *parent);
-  ~NetworkManager();
+  explicit NetworkManager(QObject *parent = 0);
 
   QString fileTemplate;
   QTemporaryFile *baseFile;

@@ -1,6 +1,6 @@
 #include "calendarwidget.h"
 
-CalendarView::CalendarView(QWidget *parent = 0)
+CalendarView::CalendarView(QWidget *parent)
   : QWebView(parent)
 {
   settings()->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, true);
@@ -14,21 +14,7 @@ CalendarView::CalendarView(QWidget *parent = 0)
 
   initActions();
 }
-CalendarView::~CalendarView()
-{
-  delete _reloadAction;
-  _reloadAction = 0;
-  delete _stopAction;
-  _stopAction = 0;
-  delete _forwardAction;
-  _forwardAction = 0;
-  delete _backwardAction;
-  _backwardAction = 0;
-  //delete _settingsAction;
-  //_settingsAction = 0;
-  delete _bookmarkAddAction;
-  _bookmarkAddAction = 0;
-}
+
 void CalendarView::initActions()
 {
   _reloadAction = new QAction(QString().fromUtf8("Обновить"), this);

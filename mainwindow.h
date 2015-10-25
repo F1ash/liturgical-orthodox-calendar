@@ -3,8 +3,8 @@
 
 #include <QMainWindow>
 #include <QDockWidget>
-#include <QCloseEvent>
 #include <QScrollArea>
+#include <QPixmap>
 #include "settingswidget.h"
 #include "networkstuff.h"
 #include "traywidget.h"
@@ -16,14 +16,11 @@
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
 public:
-    MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    explicit MainWindow(QWidget *parent = 0);
 
 private:
     qreal firstZoom;
-    bool closeFlag;
     QScrollArea *scroll;
     QDockWidget *settingsDock;
     SettingsWidget *settingsWidget;
@@ -51,7 +48,6 @@ private slots:
     void stopAction();
     void forwardAction();
     void backwardAction();
-    void closeEvent(QCloseEvent *);
     void zoomUpAction();
     void zoomOrigAction();
     void zoomDownAction();

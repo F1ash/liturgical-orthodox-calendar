@@ -6,10 +6,11 @@
 
 class BookmarkDialog : public QDialog
 {
-  Q_OBJECT;
+  Q_OBJECT
 public :
-  BookmarkDialog (QWidget *parent, Qt::WindowFlags f);
-  ~BookmarkDialog();
+  explicit BookmarkDialog (
+            QWidget *parent   = 0,
+            Qt::WindowFlags f = 0);
 
 signals :
   void bookmarkName(QString&);

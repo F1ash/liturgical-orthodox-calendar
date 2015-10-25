@@ -5,35 +5,17 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-  closeFlag = false;
-  initialSettingsDock();
-  setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred));
-  restoreGeometry(settingsWidget->get_Geometry());
-  setMinimumSize(100, 100);
-  statusBar = new StatusBar(this);
-  setStatusBar(statusBar);
-  QStringList history = QStringList();
+    initialSettingsDock();
+    setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred));
+    restoreGeometry(settingsWidget->get_Geometry());
+    setMinimumSize(100, 100);
+    statusBar = new StatusBar(this);
+    setStatusBar(statusBar);
+    QStringList history = QStringList();
 
-  initNetworkStuff();
+    initNetworkStuff();
 }
 
-MainWindow::~MainWindow()
-{
-    delete settingsWidget;
-    settingsWidget = 0;
-    delete settingsDock;
-    settingsDock = 0;
-    delete netManager;
-    netManager = 0;
-    delete calendarView;
-    calendarView = 0;
-    delete statusBar;
-    statusBar = 0;
-    delete toolBar;
-    toolBar = 0;
-    delete trayIcon;
-    trayIcon = 0;
-}
 void MainWindow::initialSettingsDock ()
 {
   settingsDock = new QDockWidget(QString().fromUtf8("Настройки"), this );
@@ -62,6 +44,18 @@ void MainWindow::initAppWidgets()
   initToolBar();
   initCalendar();
 }
+void MainWindow::initTrayIcon()
+{
+  trayIcon = new TrayIcon(this);
+  connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+          this, SLOT(trayIconActivated(QSystemTrayIcon::ActivationReason)));
+  //connect(trayIcon->hideAction, SIGNAL(triggered()),
+  //        this, SLOT(changeCalendarVisibility()));
+  connect(trayIcon->reloadAction, SIGNAL(triggered()),
+          this, SLOT(reloadAppAction()));
+  connect(trayIcon->closeAction, SIGNAL(triggered()),
+          this, SLOT(closeCalendar()));
+}
 void MainWindow::initToolBar()
 {
   toolBar = new ToolBar(this);
@@ -82,18 +76,6 @@ void MainWindow::initToolBar()
   connect(toolBar->_bookmarkAddAction, SIGNAL(triggered()), this, SLOT(addBookmarkDialog()));
   connect(toolBar->_prevDayAction, SIGNAL(triggered()), this, SLOT(showPrevDay()));
   connect(toolBar->_nextDayAction, SIGNAL(triggered()), this, SLOT(showNextDay()));
-}
-void MainWindow::initTrayIcon()
-{
-  trayIcon = new TrayIcon(this);
-  if (netManager->iconFile->exists())
-    trayIcon->setIcon(QIcon(netManager->iconFile->fileName()));
-  else trayIcon->setIcon(QIcon::fromTheme("dialog-cancel"));
-  connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, \
-  SLOT(trayIconActivated(QSystemTrayIcon::ActivationReason)));
-  connect(trayIcon->hideAction, SIGNAL(triggered()), this, SLOT(changeCalendarVisibility()));
-  connect(trayIcon->reloadAction, SIGNAL(triggered()), this, SLOT(reloadAppAction()));
-  connect(trayIcon->closeAction, SIGNAL(triggered()), this, SLOT(closeCalendar()));
 }
 void MainWindow::initCalendar()
 {
@@ -153,7 +135,13 @@ QByteArray MainWindow::buildScript()
   param2.append(QString("&date=%1").arg(_d.join("")));
   if (settingsWidget->showLiturgy()) param3 = LITURGY.arg(_date);
 
-  QString data = SCRIPT.arg(netManager->fonFile->fileName()).arg(SEARCH);
+  QPixmap fon = QIcon(":/icons/fon.png").pixmap(95);
+  QString fonPath = QString("%1%2%3")
+          .arg(QDir::tempPath())
+          .arg(QDir::separator())
+          .arg("fon.png");
+  fon.save(fonPath, "PNG");
+  QString data = SCRIPT.arg(fonPath).arg(SEARCH);
   data.append(param1);
   data.append(SCRIPT1);
   data.append(param2);
@@ -176,14 +164,14 @@ void MainWindow::changeCalendarVisibility(const bool invert)
   if (visible)
     {
       this->hide();
-      trayIcon->hideAction->setText (QString().fromUtf8("Развернуть"));
-      trayIcon->hideAction->setIcon ( QIcon().fromTheme("arrow-up"));
+      //trayIcon->hideAction->setText (QString().fromUtf8("Развернуть"));
+      //trayIcon->hideAction->setIcon ( QIcon().fromTheme("arrow-up"));
     }
   else
     {
       this->show();
-      trayIcon->hideAction->setText (QString().fromUtf8("Свернуть"));
-      trayIcon->hideAction->setIcon ( QIcon().fromTheme("arrow-down"));
+      //trayIcon->hideAction->setText (QString().fromUtf8("Свернуть"));
+      //trayIcon->hideAction->setIcon ( QIcon().fromTheme("arrow-down"));
     };
 }
 void MainWindow::changeCalendarVisibility()
@@ -217,18 +205,9 @@ void MainWindow::backwardAction()
 {
   calendarView->back();
 }
-void MainWindow::closeEvent(QCloseEvent *ev)
-{
-  if (!closeFlag)
-    {
-      this->changeCalendarVisibility();
-      ev->ignore();
-    }
-  else ev->accept();
-}
+
 void MainWindow::closeCalendar()
 {
-  closeFlag = true;
   settingsWidget->set_Geometry(this->saveGeometry());
   settingsWidget->set_ToolBarArea(this->toolBarArea(toolBar));
   settingsWidget->settings->sync();
@@ -285,7 +264,6 @@ void MainWindow::addBookmarkDialog()
   dialog = new BookmarkDialog(this, Qt::Dialog);
   connect(dialog, SIGNAL(bookmarkName(QString&)), this, SLOT(addBookmark(QString&)));
   dialog->setAttribute( Qt::WA_DeleteOnClose , true);
-  //qDebug()<<dialog->testAttribute ( Qt::WA_DeleteOnClose )<<" ::WA_DeleteOnClose";
   dialog->exec();
 }
 void MainWindow::addBookmark(QString &s)
@@ -336,9 +314,6 @@ void MainWindow::reloadAppAction()
 {
   netManager->checkCache();
   initBookmarks();
-  if (netManager->iconFile->exists())
-    trayIcon->setIcon(QIcon(netManager->iconFile->fileName()));
-  else trayIcon->setIcon(QIcon::fromTheme("dialog-cancel"));
   reloadCalendar();
   calendarView->show();
   changeCalendarVisibility(true);

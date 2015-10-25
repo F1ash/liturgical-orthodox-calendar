@@ -1,6 +1,6 @@
 #include "networkstuff.h"
 
-NetworkManager::NetworkManager(QObject *parent = 0)
+NetworkManager::NetworkManager(QObject *parent)
   : QNetworkAccessManager(parent)
 {
 #if QT_VERSION<0x050000
@@ -21,15 +21,7 @@ NetworkManager::NetworkManager(QObject *parent = 0)
   connect(this, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
   initTemporaryFiles();
 }
-NetworkManager::~NetworkManager()
-{
-  delete diskCache;
-  diskCache = 0;
-  delete fonFile;
-  fonFile = 0;
-  delete iconFile;
-  iconFile = 0;
-}
+
 void NetworkManager::initTemporaryFiles()
 {
   fileTemplate.append(QDir::tempPath());
@@ -44,6 +36,7 @@ void NetworkManager::initTemporaryFiles()
 }
 void NetworkManager::checkCache()
 {
+    /* used resource data
   QNetworkRequest fonRequest = QNetworkRequest(QUrl::fromUserInput("http://www.pravoslavie.ru/images/fon1.jpg"));
   fonRequest.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
   get(fonRequest);
@@ -51,6 +44,8 @@ void NetworkManager::checkCache()
   QNetworkRequest iconRequest = QNetworkRequest(QUrl::fromUserInput("http://www.pravoslavie.ru/images/znak2.gif"));
   iconRequest.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
   get(iconRequest);
+  */
+    emit cacheChecked();
 }
 void NetworkManager::replyFinished(QNetworkReply* reply)
 {
@@ -61,6 +56,7 @@ void NetworkManager::replyFinished(QNetworkReply* reply)
   //if ( reply->error()==QNetworkReply::NoError ) qDebug()<<reply->url()<<" "<<count;
   //else qDebug()<<reply->url()<<"Error: "<<reply->error()<<" "<<count;
 
+  /*
   QTemporaryFile *file;
   QString fileName= QString("").append(fileTemplate);
   if (reply->request().url().toString().endsWith("fon1.jpg"))
@@ -86,4 +82,5 @@ void NetworkManager::replyFinished(QNetworkReply* reply)
       emit cacheChecked();
       count = 0;
     };
+    */
 }

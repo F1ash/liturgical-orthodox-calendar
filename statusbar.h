@@ -3,10 +3,9 @@
 
 class StatusBar : public QStatusBar
 {
-  Q_OBJECT;
+  Q_OBJECT
 public :
-  StatusBar(QWidget *parent);
-  ~StatusBar();
+  explicit StatusBar(QWidget *parent = 0);
 
   QProgressBar *progress;
 

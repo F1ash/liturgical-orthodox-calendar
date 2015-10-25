@@ -1,15 +1,11 @@
 #include "statusbar.h"
 
-StatusBar::StatusBar(QWidget *parent = 0) : QStatusBar(parent)
+StatusBar::StatusBar(QWidget *parent) : QStatusBar(parent)
 {
   progress = new QProgressBar(this);
   this->insertWidget(0, progress);
 }
-StatusBar::~StatusBar()
-{
-  delete progress;
-  progress = 0;
-}
+
 void StatusBar::_loadStarted()
 {
   //qDebug()<<"started";
