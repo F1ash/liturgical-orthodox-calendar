@@ -211,6 +211,7 @@ void MainWindow::closeCalendar()
   settingsWidget->set_Geometry(this->saveGeometry());
   settingsWidget->set_ToolBarArea(this->toolBarArea(toolBar));
   settingsWidget->settings->sync();
+  trayIcon->hide();
   this->close();
 }
 void MainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason r)
