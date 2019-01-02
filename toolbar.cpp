@@ -1,5 +1,5 @@
 #include "toolbar.h"
-#include <QDebug>
+//#include <QDebug>
 
 ToolBar::ToolBar (QWidget *parent) : QToolBar(parent)
 {
@@ -12,32 +12,32 @@ ToolBar::ToolBar (QWidget *parent) : QToolBar(parent)
 
 void ToolBar::initActions()
 {
-  _reloadAction = new QAction(QString().fromUtf8("Обновить"), this);
-  _reloadAction->setIcon ( QIcon().fromTheme("view-refresh") );
-  _stopAction = new QAction(QString().fromUtf8("Остановить"), this);
-  _stopAction->setIcon ( QIcon().fromTheme("process-stop") );
-  _forwardAction = new QAction(QString().fromUtf8("Вперёд"), this);
-  _forwardAction->setIcon ( QIcon().fromTheme("go-next") );
-  _backwardAction = new QAction(QString().fromUtf8("Назад"), this);
-  _backwardAction->setIcon ( QIcon().fromTheme("go-previous") );
-  _zoomUpAction = new QAction(QString().fromUtf8("Увеличить"), this);
-  _zoomUpAction->setIcon ( QIcon().fromTheme("zoom-in") );
-  _zoomOrigAction = new QAction(QString().fromUtf8("Оригинальный"), this);
-  _zoomOrigAction->setIcon ( QIcon().fromTheme("zoom-original") );
-  _zoomDownAction = new QAction(QString().fromUtf8("Уменьшить"), this);
-  _zoomDownAction->setIcon ( QIcon().fromTheme("zoom-out") );
-  _settingsAction = new QAction(QString().fromUtf8("Настройки"), this);
-  _settingsAction->setIcon ( QIcon().fromTheme("configure") );
-  _bookmarkAddAction = new QAction(QString().fromUtf8("Добавить в закладки"), this);
-  _bookmarkAddAction->setIcon ( QIcon().fromTheme("bookmark-new") );
+  _reloadAction = new QAction(QString::fromUtf8("Обновить"), this);
+  _reloadAction->setIcon ( QIcon::fromTheme("view-refresh") );
+  _stopAction = new QAction(QString::fromUtf8("Остановить"), this);
+  _stopAction->setIcon ( QIcon::fromTheme("process-stop") );
+  _forwardAction = new QAction(QString::fromUtf8("Вперёд"), this);
+  _forwardAction->setIcon ( QIcon::fromTheme("go-next") );
+  _backwardAction = new QAction(QString::fromUtf8("Назад"), this);
+  _backwardAction->setIcon ( QIcon::fromTheme("go-previous") );
+  _zoomUpAction = new QAction(QString::fromUtf8("Увеличить"), this);
+  _zoomUpAction->setIcon ( QIcon::fromTheme("zoom-in") );
+  _zoomOrigAction = new QAction(QString::fromUtf8("Оригинальный"), this);
+  _zoomOrigAction->setIcon ( QIcon::fromTheme("zoom-original") );
+  _zoomDownAction = new QAction(QString::fromUtf8("Уменьшить"), this);
+  _zoomDownAction->setIcon ( QIcon::fromTheme("zoom-out") );
+  _settingsAction = new QAction(QString::fromUtf8("Настройки"), this);
+  _settingsAction->setIcon ( QIcon::fromTheme("configure") );
+  _bookmarkAddAction = new QAction(QString::fromUtf8("Добавить в закладки"), this);
+  _bookmarkAddAction->setIcon ( QIcon::fromTheme("bookmark-new") );
   _clearAction = new QAction(QString::fromUtf8("Очистить"), this);
   connect(_clearAction, SIGNAL(triggered()), this, SLOT(clearAction()));
   _clearHistoryAction = new QAction(QString::fromUtf8("Очистить"), this);
   connect(_clearHistoryAction, SIGNAL(triggered()), this, SLOT(clearHistoryAction()));
-  _prevDayAction = new QAction(QString().fromUtf8("Предыдущий день"), this);
-  _prevDayAction->setIcon ( QIcon().fromTheme("draw-arrow-back") );
-  _nextDayAction = new QAction(QString().fromUtf8("Следующий день"), this);
-  _nextDayAction->setIcon ( QIcon().fromTheme("draw-arrow-forward") );
+  _prevDayAction = new QAction(QString::fromUtf8("Предыдущий день"), this);
+  _prevDayAction->setIcon ( QIcon::fromTheme("draw-arrow-back") );
+  _nextDayAction = new QAction(QString::fromUtf8("Следующий день"), this);
+  _nextDayAction->setIcon ( QIcon::fromTheme("draw-arrow-forward") );
 
   addAction(_reloadAction);
   addAction(_stopAction);

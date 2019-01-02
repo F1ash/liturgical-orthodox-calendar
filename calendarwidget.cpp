@@ -17,18 +17,18 @@ CalendarView::CalendarView(QWidget *parent)
 
 void CalendarView::initActions()
 {
-  _reloadAction = new QAction(QString().fromUtf8("Обновить"), this);
-  _reloadAction->setIcon ( QIcon().fromTheme("view-refresh") );
-  _stopAction = new QAction(QString().fromUtf8("Остановить"), this);
-  _stopAction->setIcon ( QIcon().fromTheme("process-stop") );
-  _forwardAction = new QAction(QString().fromUtf8("Вперёд"), this);
-  _forwardAction->setIcon ( QIcon().fromTheme("go-next") );
-  _backwardAction = new QAction(QString().fromUtf8("Назад"), this);
-  _backwardAction->setIcon ( QIcon().fromTheme("go-previous") );
-  //_settingsAction = new QAction(QString().fromUtf8("Настройки"), this);
-  //_settingsAction->setIcon ( QIcon().fromTheme("settings") );
-  _bookmarkAddAction = new QAction(QString().fromUtf8("Добавить в закладки"), this);
-  _bookmarkAddAction->setIcon ( QIcon().fromTheme("bookmark-new") );
+  _reloadAction = new QAction(QString::fromUtf8("Обновить"), this);
+  _reloadAction->setIcon ( QIcon::fromTheme("view-refresh") );
+  _stopAction = new QAction(QString::fromUtf8("Остановить"), this);
+  _stopAction->setIcon ( QIcon::fromTheme("process-stop") );
+  _forwardAction = new QAction(QString::fromUtf8("Вперёд"), this);
+  _forwardAction->setIcon ( QIcon::fromTheme("go-next") );
+  _backwardAction = new QAction(QString::fromUtf8("Назад"), this);
+  _backwardAction->setIcon ( QIcon::fromTheme("go-previous") );
+  //_settingsAction = new QAction(QString::fromUtf8("Настройки"), this);
+  //_settingsAction->setIcon ( QIcon::fromTheme("settings") );
+  _bookmarkAddAction = new QAction(QString::fromUtf8("Добавить в закладки"), this);
+  _bookmarkAddAction->setIcon ( QIcon::fromTheme("bookmark-new") );
 
   addAction(_reloadAction);
   addAction(_stopAction);

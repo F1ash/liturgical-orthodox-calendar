@@ -1,31 +1,31 @@
 #include "settingswidget.h"
-#include <QDebug>
+//#include <QDebug>
 
 SettingsWidget::SettingsWidget (QWidget *parent, Qt::WindowFlags f) :
   QWidget(parent, f)
 {
   settings = new QSettings("LiturgicalOrthodoxCalendar", "LiturgicalOrthodoxCalendar");
 
-  visibleInStart = new QCheckBox(QString().fromUtf8("показывать при запуске"));
-  day_Icon = new QCheckBox(QString().fromUtf8("икона дня"));
+  visibleInStart = new QCheckBox(QString::fromUtf8("показывать при запуске"));
+  day_Icon = new QCheckBox(QString::fromUtf8("икона дня"));
   customDate = new QCalendarWidget(this);
   customDate->setMinimumDate(QDate(2013, 1, 1));
   customDate->setMaximumDate(QDate(2020, 12, 31));
   customDate->setFirstDayOfWeek(Qt::Monday);
-  images = new QCheckBox(QString().fromUtf8("ссылки на житие, иконы, храм,\nтропарь в виде картинок"));
-  vek = new QCheckBox(QString().fromUtf8("выводить год/век события"));
-  bold = new QCheckBox(QString().fromUtf8("выделять особо почитаемых святых"));
-  para = new QCheckBox(QString().fromUtf8("разбивать текст на абзацы"));
-  tipikon = new QCheckBox(QString().fromUtf8("выводить значки типикона"));
-  trapeza = new QCheckBox(QString().fromUtf8("выводить сведения о трапезе"));
-  feofan = new QCheckBox(QString().fromUtf8("выводить \"Мысли на каждый день года\"\nсвт. Феофана Затворника"));
+  images = new QCheckBox(QString::fromUtf8("ссылки на житие, иконы, храм,\nтропарь в виде картинок"));
+  vek = new QCheckBox(QString::fromUtf8("выводить год/век события"));
+  bold = new QCheckBox(QString::fromUtf8("выделять особо почитаемых святых"));
+  para = new QCheckBox(QString::fromUtf8("разбивать текст на абзацы"));
+  tipikon = new QCheckBox(QString::fromUtf8("выводить значки типикона"));
+  trapeza = new QCheckBox(QString::fromUtf8("выводить сведения о трапезе"));
+  feofan = new QCheckBox(QString::fromUtf8("выводить \"Мысли на каждый день года\"\nсвт. Феофана Затворника"));
   church = new QComboBox(this);
   church->addItem(QString::fromUtf8("Русская Православная Церковь"), 0);
   church->addItem(QString::fromUtf8("РПЦ + РПЦ За_Рубежём"), 1);
   church->addItem(QString::fromUtf8("РПЦ + РПЦ За_Рубежём + все доступные"), 2);
   church->setToolTip(QString::fromUtf8("Святцы"));
-  chten = new QCheckBox(QString().fromUtf8("выводить чтения дня"));
-  liturgical = new QCheckBox(QString().fromUtf8("богослужебные указания"));
+  chten = new QCheckBox(QString::fromUtf8("выводить чтения дня"));
+  liturgical = new QCheckBox(QString::fromUtf8("богослужебные указания"));
 
   vbox = new QVBoxLayout;
   vbox->addWidget( visibleInStart );
@@ -42,7 +42,7 @@ SettingsWidget::SettingsWidget (QWidget *parent, Qt::WindowFlags f) :
   vbox->addWidget( chten );
   vbox->addWidget( liturgical );
 
-  apply = new QPushButton(QString().fromUtf8("Применить"));
+  apply = new QPushButton(QString::fromUtf8("Применить"));
   vbox->addWidget( apply );
   connect(apply, SIGNAL(clicked()), this, SLOT(apply_Settings()));
 

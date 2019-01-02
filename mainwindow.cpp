@@ -1,10 +1,11 @@
 #include "mainwindow.h"
 #include "data.h"
-#include <QDebug>
+//#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
+    setWindowIcon(QIcon(":/icons/logo.png"));
     initialSettingsDock();
     setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred));
     restoreGeometry(settingsWidget->get_Geometry());
@@ -18,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::initialSettingsDock ()
 {
-  settingsDock = new QDockWidget(QString().fromUtf8("Настройки"), this );
+  settingsDock = new QDockWidget(QString::fromUtf8("Настройки"), this );
   scroll = new QScrollArea(settingsDock);
   settingsWidget = new SettingsWidget( scroll );
   scroll->setWidget(settingsWidget);
@@ -164,14 +165,14 @@ void MainWindow::changeCalendarVisibility(const bool invert)
   if (visible)
     {
       this->hide();
-      //trayIcon->hideAction->setText (QString().fromUtf8("Развернуть"));
-      //trayIcon->hideAction->setIcon ( QIcon().fromTheme("arrow-up"));
+      //trayIcon->hideAction->setText (QString::fromUtf8("Развернуть"));
+      //trayIcon->hideAction->setIcon ( QIcon::fromTheme("arrow-up"));
     }
   else
     {
       this->show();
-      //trayIcon->hideAction->setText (QString().fromUtf8("Свернуть"));
-      //trayIcon->hideAction->setIcon ( QIcon().fromTheme("arrow-down"));
+      //trayIcon->hideAction->setText (QString::fromUtf8("Свернуть"));
+      //trayIcon->hideAction->setIcon ( QIcon::fromTheme("arrow-down"));
     };
 }
 void MainWindow::changeCalendarVisibility()
