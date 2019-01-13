@@ -9,8 +9,7 @@ class SettingsWidget : public QWidget
 {
   Q_OBJECT
 public:
-  SettingsWidget(QWidget *parent = 0, Qt::WindowFlags f = 0);
-  ~SettingsWidget();
+  SettingsWidget(QWidget *parent = Q_NULLPTR, Qt::WindowFlags f = Qt::Widget);
 
   QSettings *settings;
 

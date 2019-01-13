@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "data.h"
+#include <QGuiApplication>
 //#include <QDebug>
+//#include <QTextStream>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -13,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     statusBar = new StatusBar(this);
     setStatusBar(statusBar);
     QStringList history = QStringList();
+    clipBoard = QGuiApplication::clipboard();
 
     initNetworkStuff();
 }
@@ -98,6 +101,7 @@ void MainWindow::initCalendar()
   connect(calendarView->_backwardAction, SIGNAL(triggered()), this, SLOT(backwardAction()));
   //connect(calendarView->_settingsAction, SIGNAL(triggered()), this, SLOT(settingsAction()));
   connect(calendarView->_bookmarkAddAction, SIGNAL(triggered()), this, SLOT(addBookmarkDialog()));
+  connect(calendarView->_copyAction, SIGNAL(triggered()), this, SLOT(copySelectedObject()));
 
   this->setCentralWidget(calendarView);
   this->setFocusProxy(calendarView);
@@ -267,6 +271,12 @@ void MainWindow::addBookmarkDialog()
   connect(dialog, SIGNAL(bookmarkName(QString&)), this, SLOT(addBookmark(QString&)));
   dialog->setAttribute( Qt::WA_DeleteOnClose , true);
   dialog->exec();
+}
+void MainWindow::copySelectedObject()
+{
+    //QTextStream s(stdout);
+    //s<<calendarView->selectedText()<<endl;
+    clipBoard->setText(calendarView->selectedText(), QClipboard::Clipboard);
 }
 void MainWindow::addBookmark(QString &s)
 {

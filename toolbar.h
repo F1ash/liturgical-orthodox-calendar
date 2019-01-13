@@ -7,7 +7,7 @@ class ToolBar : public QToolBar
 {
   Q_OBJECT
 public:
-  explicit ToolBar(QWidget *parent = 0);
+  explicit ToolBar(QWidget *parent = Q_NULLPTR);
 
   QAction *_reloadAction;
   QAction *_stopAction;

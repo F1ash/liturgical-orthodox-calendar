@@ -6,7 +6,7 @@ class TrayIcon : public QSystemTrayIcon
 {
   Q_OBJECT
 public :
-  explicit TrayIcon(QWidget *parent = 0);
+  explicit TrayIcon(QWidget *parent = Q_NULLPTR);
 
   //QAction *hideAction;
   QAction *reloadAction;

@@ -5,7 +5,7 @@ class StatusBar : public QStatusBar
 {
   Q_OBJECT
 public :
-  explicit StatusBar(QWidget *parent = 0);
+  explicit StatusBar(QWidget *parent = Q_NULLPTR);
 
   QProgressBar *progress;
 

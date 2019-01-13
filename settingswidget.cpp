@@ -49,39 +49,7 @@ SettingsWidget::SettingsWidget (QWidget *parent, Qt::WindowFlags f) :
   setLayout( vbox );
   readSettings();
 }
-SettingsWidget::~SettingsWidget ()
-{
-  delete day_Icon;
-  day_Icon = 0;
-  delete customDate;
-  customDate = 0;
-  delete images;
-  images = 0;
-  delete vek;
-  vek = 0;
-  delete bold;
-  bold = 0;
-  delete para;
-  para = 0;
-  delete tipikon;
-  tipikon = 0;
-  delete trapeza;
-  trapeza = 0;
-  delete feofan;
-  feofan = 0;
-  delete church;
-  church = 0;
-  delete chten;
-  chten = 0;
-  delete visibleInStart;
-  visibleInStart = 0;
-  delete liturgical;
-  liturgical = 0;
-  delete apply;
-  apply = 0;
-  delete vbox;
-  vbox = 0;
-}
+
 int SettingsWidget::showInStart() const
 {
   return _showInStart;

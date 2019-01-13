@@ -29,6 +29,8 @@ void CalendarView::initActions()
   //_settingsAction->setIcon ( QIcon::fromTheme("settings") );
   _bookmarkAddAction = new QAction(QString::fromUtf8("Добавить в закладки"), this);
   _bookmarkAddAction->setIcon ( QIcon::fromTheme("bookmark-new") );
+  _copyAction = new QAction (QString::fromUtf8("Копировать"), this);
+  _copyAction->setIcon ( QIcon::fromTheme("edit-copy") );
 
   addAction(_reloadAction);
   addAction(_stopAction);
@@ -36,6 +38,7 @@ void CalendarView::initActions()
   addAction(_backwardAction);
   //addAction(_settingsAction);
   addAction(_bookmarkAddAction);
+  addAction(_copyAction);
 }
 void CalendarView::loader(QUrl& url)
 {

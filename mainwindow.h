@@ -5,6 +5,7 @@
 #include <QDockWidget>
 #include <QScrollArea>
 #include <QPixmap>
+#include <QClipboard>
 #include "settingswidget.h"
 #include "networkstuff.h"
 #include "traywidget.h"
@@ -17,7 +18,7 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(QWidget *parent = Q_NULLPTR);
 
 private:
     qreal firstZoom;
@@ -31,6 +32,7 @@ private:
     CalendarView *calendarView;
     BookmarkDialog *dialog;
     QStringList history;
+    QClipboard *clipBoard;
 
 private slots:
     void initialSettingsDock();
@@ -58,6 +60,7 @@ private slots:
     void addBookmark(QString &);
     void addBookmarkAction(QString &);
     void addBookmarkDialog();
+    void copySelectedObject();
     void initBookmarks();
     void loadBookmarkLink(QAction*);
     void removeBookmark(QString);

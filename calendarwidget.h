@@ -9,7 +9,7 @@ class CalendarView : public QWebView
 {
   Q_OBJECT
 public :
-  explicit CalendarView(QWidget *parent = 0);
+  explicit CalendarView(QWidget *parent = Q_NULLPTR);
 
   QAction *_reloadAction;
   QAction *_stopAction;
@@ -17,6 +17,7 @@ public :
   QAction *_backwardAction;
   //QAction *_settingsAction;
   QAction *_bookmarkAddAction;
+  QAction *_copyAction;
 
 public slots :
   void loader(QUrl& url);
