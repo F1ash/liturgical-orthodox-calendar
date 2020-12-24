@@ -29,7 +29,7 @@ void MainWindow::initialSettingsDock ()
   settingsDock->setWidget ( scroll );
 
   settingsDock->setAllowedAreas ( Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea );
-  settingsDock->setFeatures ( QDockWidget::AllDockWidgetFeatures );
+  //settingsDock->setFeatures ( QDockWidget::AllDockWidgetFeatures );
 
   addDockWidget( Qt::LeftDockWidgetArea, settingsDock );
   settingsDock->hide();
@@ -267,7 +267,7 @@ void MainWindow::addBookmarkAction(QString &bookmarkName)
 }
 void MainWindow::addBookmarkDialog()
 {
-  dialog = new BookmarkDialog(this, Qt::Dialog);
+  dialog = new BookmarkDialog(this);
   connect(dialog, SIGNAL(bookmarkName(QString&)), this, SLOT(addBookmark(QString&)));
   dialog->setAttribute( Qt::WA_DeleteOnClose , true);
   dialog->exec();

@@ -1,8 +1,7 @@
 #include "addbookmarkdialog.h"
 
-BookmarkDialog::BookmarkDialog(
-        QWidget *parent, Qt::WindowFlags f)
-    : QDialog(parent, f)
+BookmarkDialog::BookmarkDialog(QWidget *parent)
+    : QDialog(parent)
 {
   _bookmarkName = QString();
   bookmarkNameEdit = new QLineEdit(this);

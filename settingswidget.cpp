@@ -10,7 +10,7 @@ SettingsWidget::SettingsWidget (QWidget *parent, Qt::WindowFlags f) :
   day_Icon = new QCheckBox(QString::fromUtf8("икона дня"));
   customDate = new QCalendarWidget(this);
   customDate->setMinimumDate(QDate(2013, 1, 1));
-  customDate->setMaximumDate(QDate(2020, 12, 31));
+  customDate->setMaximumDate(QDate(2030, 12, 31));
   customDate->setFirstDayOfWeek(Qt::Monday);
   images = new QCheckBox(QString::fromUtf8("ссылки на житие, иконы, храм,\nтропарь в виде картинок"));
   vek = new QCheckBox(QString::fromUtf8("выводить год/век события"));
