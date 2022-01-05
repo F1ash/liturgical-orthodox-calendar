@@ -4,15 +4,15 @@
 
 class TrayIcon : public QSystemTrayIcon
 {
-  Q_OBJECT
+    Q_OBJECT
 public :
-  explicit TrayIcon(QWidget *parent = Q_NULLPTR);
+    explicit TrayIcon(QWidget *parent = Q_NULLPTR);
 
-  //QAction *hideAction;
-  QAction *reloadAction;
-  QAction *closeAction;
+    //QAction *hideAction;
+    QAction *reloadAction;
+    QAction *closeAction;
 
 private :
-  QMenu *trayIconMenu;
+    QMenu *trayIconMenu;
 };
 

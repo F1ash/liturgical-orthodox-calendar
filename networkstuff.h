@@ -9,26 +9,26 @@
 
 class NetworkManager : public QNetworkAccessManager
 {
-  Q_OBJECT
+    Q_OBJECT
 public :
-  explicit NetworkManager(QObject *parent = Q_NULLPTR);
+    explicit NetworkManager(QObject *parent = Q_NULLPTR);
 
-  QString fileTemplate;
-  QTemporaryFile *baseFile;
-  QTemporaryFile *fonFile;
-  QTemporaryFile *iconFile;
-  QString cacheDir;
+    QString fileTemplate;
+    QTemporaryFile *baseFile;
+    QTemporaryFile *fonFile;
+    QTemporaryFile *iconFile;
+    QString cacheDir;
 
 private :
-  QNetworkDiskCache *diskCache;
+    QNetworkDiskCache *diskCache;
 
 signals:
-  void cacheChecked();
+    void cacheChecked();
 
 public slots :
-  void checkCache();
+    void checkCache();
 
 private slots :
-  void initTemporaryFiles();
-  void replyFinished(QNetworkReply*);
+    void initTemporaryFiles();
+    void replyFinished(QNetworkReply*);
 };

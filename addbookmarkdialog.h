@@ -6,23 +6,22 @@
 
 class BookmarkDialog : public QDialog
 {
-  Q_OBJECT
+    Q_OBJECT
 public :
-  explicit BookmarkDialog (
-            QWidget *parent   = 0);
+    explicit BookmarkDialog(QWidget *parent = 0);
 
 signals :
-  void bookmarkName(QString&);
+    void bookmarkName(QString&);
 
 private :
-  QString _bookmarkName;
-  QLineEdit *bookmarkNameEdit;
-  QPushButton *ok;
-  QPushButton *cancel;
-  QVBoxLayout *myLayout;
-  QHBoxLayout *buttonLayout;
+    QString _bookmarkName;
+    QLineEdit *bookmarkNameEdit;
+    QPushButton *ok;
+    QPushButton *cancel;
+    QVBoxLayout *myLayout;
+    QHBoxLayout *buttonLayout;
 
 private slots :
-  void setBookmarkName();
-  void closeDialog();
+    void setBookmarkName();
+    void closeDialog();
 };

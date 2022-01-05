@@ -7,21 +7,21 @@
 
 class CalendarView : public QWebView
 {
-  Q_OBJECT
+    Q_OBJECT
 public :
-  explicit CalendarView(QWidget *parent = Q_NULLPTR);
+    explicit CalendarView(QWidget *parent = Q_NULLPTR);
 
-  QAction *_reloadAction;
-  QAction *_stopAction;
-  QAction *_forwardAction;
-  QAction *_backwardAction;
-  //QAction *_settingsAction;
-  QAction *_bookmarkAddAction;
-  QAction *_copyAction;
+    QAction *_reloadAction;
+    QAction *_stopAction;
+    QAction *_forwardAction;
+    QAction *_backwardAction;
+    //QAction *_settingsAction;
+    QAction *_bookmarkAddAction;
+    QAction *_copyAction;
 
 public slots :
-  void loader(QUrl& url);
+    void loader(QUrl& url);
 
 private slots :
-  void initActions();
+    void initActions();
 };
